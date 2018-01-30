@@ -1,0 +1,289 @@
+ <div class="jumbotron jumbotron-fluid" style="height:-webkit-fill-available" ng-show="welcomeVisible">
+    <div class="container" style="text-align: center;">
+        <h1 class="display-4">Welcome to Herbeat App</h1>
+        <hr class="my-4">
+        <p class="lead">Get started by selecting a patient ID above.</p>
+  </div>
+</div>
+<div id="stat-data" ng-show="statVisible">       
+<div class="card-deck">
+      <!--user goals-->
+        <div class="card mb-3" ng-controller="userGoalsCtrl">
+        <div class="card-header">
+            <i class="fa fa-table"></i> User Goals</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Serial No</th>
+                  <th>Time</th>
+                  <th>Readiness Level</th>
+                  <th>Walk Target</th>
+                  <th>Current Energy</th>
+                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="resp in pagedRecords[currentPage]">
+                  <td>{{resp.serial_no}}</td>
+                  <td>{{resp.activity}}</td>
+                  <td>{{resp.readiness_level}}</td>
+                  <td>{{resp.walk_target}}</td>
+                  <td>{{resp.current_energy}}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+              <nav class="pagination pull-right">
+                  <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                    <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                        <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                    </li>
+
+                    <li ng-repeat="n in range(goalResp.length, itemsPerPage) "
+                        ng-class="{active: n == currentPage}" class="page-item"
+                    ng-click="setPage()">
+                        <a href ng-bind="n + 1" class="page-link">1</a>
+                    </li>
+
+                    <li ng-class="{disabled: (currentPage) == Math.floor(goalResp.length/itemsPerPage)}" class="page-item">
+                        <a href ng-click="nextPage()" class="page-link">Next »</a>
+                    </li>
+                </ul>
+            </nav>
+          </div>
+        </div>
+            <div class="card-footer small text-muted">
+                <div class="card-deck">
+                    <div class="input-group date" id="goalstartDate" style="width:150px; margin-right: 5px">
+                        <input type="text" class="form-control" placeholder="Start Date" ng-model="goalstDate">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="input-group date" id="goalendDate" style="width:150px; margin-right: 5px">
+                        <input type="text" class="form-control" placeholder="End Date" ng-model="goalendDate">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="searchUsergoals()">Search</button>
+                </div>
+            </div>
+      </div> 
+    <!--user activity-->
+        <div class="card mb-3" ng-controller="userActivitiesCtrl">
+        <div class="card-header">
+            <i class="fa fa-table"></i> User Activities</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" style="max-height: 200px">
+              <thead>
+                <tr>
+                  <th>Serial No</th>
+                  <th>Time</th>
+                  <th>Sitting Duration</th>
+                  <th>Walking Duration</th>
+                  <th>Step Count</th>
+                  <th>Distance Covered</th>
+                  
+                </tr>
+              </thead>
+              <tbody style="height:200px;overflow-y:auto;width: 100%;">
+                <tr ng-repeat="resp in pagedRecords[currentPage]">
+                  <td>{{resp.serial_no}}</td>
+                  <td>{{resp.activity}}</td>
+                  <td>{{resp.user_sitting_duration}}</td>
+                  <td>{{resp.user_walking_duration}}</td>
+                  <td>{{resp.user_step_count}}</td>
+                  <td>{{resp.distance_covered_in_miles}}</td>
+                  
+                </tr>
+              </tbody>
+            </table>
+              <nav class="pagination pull-right">
+                  <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                    <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                        <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                    </li>
+
+                    <li ng-repeat="n in range(activityResp.length, itemsPerPage) "
+                        ng-class="{active: n == currentPage}" class="page-item"
+                    ng-click="setPage()">
+                        <a href ng-bind="n + 1" class="page-link">1</a>
+                    </li>
+
+                    <li ng-class="{disabled: (currentPage) == Math.floor(activityResp.length/itemsPerPage)}" class="page-item">
+                        <a href ng-click="nextPage()" class="page-link">Next »</a>
+                    </li>
+                </ul>
+            </nav>
+          </div>
+        </div>
+            <div class="card-footer small text-muted">
+                <div class="card-deck">
+                    <div class="input-group date" id="actstartDate" style="width:150px; margin-right: 5px">
+                        <input type="text" class="form-control" placeholder="Start Date" ng-model="activitystDate">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="input-group date" id="actendDate" style="width:150px; margin-right: 5px">
+                        <input type="text" class="form-control" placeholder="End Date" ng-model="activityendDate">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="searchActivity()">Search</button>
+                </div>
+            </div>
+      </div>
+    </div>
+        <!--ema response-->
+        <div class="card-deck" ng-controller="EMAResCtrl">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fa fa-table"></i> EMA Response</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                    <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                            <th>Serial No</th>
+                          <th>Activity</th>
+                          <th>Company</th>
+                          <th>Curr. Location</th>
+                          <th>Food Habit</th>
+                          <th>Feelings</th>
+                          <th>Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="resp in pagedRecords[currentPage]">
+                            <td>{{resp.serial_no}}</td>
+                          <td>{{resp.user_selected_activity}}</td>
+                          <td>{{resp.user_company}}</td>
+                          <td>{{resp.user_curr_location}}</td>
+                          <td>{{resp.user_food_habit}}</td>
+                          <td>{{resp.user_feelings}}</td>
+                          <td>{{resp.activity_time}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                        <nav class="pagination pull-right">
+                            <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                              <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                                  <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                              </li>
+
+                              <li ng-repeat="n in range(emaResp.length, itemsPerPage) "
+                                  ng-class="{active: n == currentPage}" class="page-item"
+                              ng-click="setPage()">
+                                  <a href ng-bind="n + 1" class="page-link">1</a>
+                              </li>
+
+                              <li ng-class="{disabled: (currentPage) == Math.floor(emaResp.length/itemsPerPage)}" class="page-item">
+                                  <a href ng-click="nextPage()" class="page-link">Next »</a>
+                              </li>
+                          </ul>
+                      </nav>
+                  </div>
+                </div>
+                <div class="card-footer small text-muted">
+                    <div class="card-deck">
+                        <div class="input-group date" id="emastartDate" style="width:150px; margin-right: 5px">
+                            <input type="text" class="form-control" placeholder="Start Date" ng-model="emastDate">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                        </div>
+                        <div class="input-group date" id="emaendDate" style="width:150px; margin-right: 5px">
+                            <input type="text" class="form-control" placeholder="End Date" ng-model="emaendDate">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                        </div>
+                        <button type="button" class="btn btn-primary" ng-click="searchEmaResp()">Search</button>
+                    </div>
+                </div>
+              </div>
+        </div>
+        <!--user heart rate-->
+        <!-- Example DataTables Card-->
+        <div class="card mb-3" ng-controller="heartRateCtrl">
+        <div class="card-header">
+          <i class="fa fa-area-chart"></i> Heart Rate</div>
+        <div class="card-body">
+          <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" 
+	chart-series="series"></canvas> 
+        </div>
+            <div class="card-footer small text-muted">
+                <div class="card-deck">
+                <div class="input-group date" id="hstartDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="Start Date" ng-model="hstDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <div class="input-group date" id="hendDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="End Date" ng-model="hendDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="searchHeartrate()">Search</button>
+            </div>
+            </div>
+      </div>
+        <!--user watched videos-->
+        <!-- Example DataTables Card-->
+        <div class="card mb-3" ng-controller="watchedVideoCtrl">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Watched Videos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Serial No</th>
+                  <th>Time</th>
+                  <th>Video Title</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="video in pagedRecords[currentPage]">
+                  <td>{{video.serial_no}}</td>
+                  <td>{{video.activity_time}}</td>
+                  <td>{{video.video_title}}</td>
+                </tr>
+              </tbody>
+            </table>
+              <nav class="pagination pull-right">
+                <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                  <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                      <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                  </li>
+
+                  <li ng-repeat="n in range(videos.length, itemsPerPage) "
+                      ng-class="{active: n == currentPage}" class="page-item"
+                  ng-click="setPage()">
+                      <a href ng-bind="n + 1" class="page-link">1</a>
+                  </li>
+
+                  <li ng-class="{disabled: (currentPage) == Math.floor(videos.length/itemsPerPage)}" class="page-item">
+                      <a href ng-click="nextPage()" class="page-link">Next »</a>
+                  </li>
+              </ul>
+          </nav>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <div class="card-deck">
+                <div class="input-group date" id="startDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="Start Date" ng-model="stDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <div class="input-group date" id="endDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="End Date" ng-model="endDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="searchWatchedVideos()">Search</button>
+            </div>
+        </div>
+      </div>
+</div>
