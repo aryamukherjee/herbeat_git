@@ -36,7 +36,7 @@
               </tbody>
             </table>
               <nav class="pagination pull-right">
-                  <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                  <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
                     <li ng-class="{disabled: currentPage == 0}" class="page-item">
                         <a href ng-click="prevPage()" class="page-link">« Prev</a>
                     </li>
@@ -101,7 +101,7 @@
               </tbody>
             </table>
               <nav class="pagination pull-right">
-                  <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                  <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
                     <li ng-class="{disabled: currentPage == 0}" class="page-item">
                         <a href ng-click="prevPage()" class="page-link">« Prev</a>
                     </li>
@@ -146,29 +146,31 @@
                     <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                       <thead>
                         <tr>
-                            <th>Serial No</th>
+                          <th>Serial No</th>
                           <th>Activity</th>
                           <th>Company</th>
                           <th>Curr. Location</th>
                           <th>Food Habit</th>
                           <th>Feelings</th>
+                          <th>Motivation</th>
                           <th>Time</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr ng-repeat="resp in pagedRecords[currentPage]">
-                            <td>{{resp.serial_no}}</td>
+                          <td>{{resp.serial_no}}</td>
                           <td>{{resp.user_selected_activity}}</td>
                           <td>{{resp.user_company}}</td>
                           <td>{{resp.user_curr_location}}</td>
                           <td>{{resp.user_food_habit}}</td>
                           <td>{{resp.user_feelings}}</td>
+                          <td>{{resp.motivation_screen}}</td>
                           <td>{{resp.activity_time}}</td>
                         </tr>
                       </tbody>
                     </table>
                         <nav class="pagination pull-right">
-                            <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                            <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
                               <li ng-class="{disabled: currentPage == 0}" class="page-item">
                                   <a href ng-click="prevPage()" class="page-link">« Prev</a>
                               </li>
@@ -252,7 +254,7 @@
               </tbody>
             </table>
               <nav class="pagination pull-right">
-                <ul class="pagination pagination-sm" style="margin-bottom: 0px">
+                <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
                   <li ng-class="{disabled: currentPage == 0}" class="page-item">
                       <a href ng-click="prevPage()" class="page-link">« Prev</a>
                   </li>
@@ -285,5 +287,69 @@
                 <button type="button" class="btn btn-primary" ng-click="searchWatchedVideos()">Search</button>
             </div>
         </div>
+            
+            
+            
+            
+            
       </div>
+        
+        <div class="card mb-3" ng-controller="HeartRateCtrl">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Heart Rate</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Serial No</th>
+                  <th>Time</th>
+                  <th>Heart Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="rate in pagedRecords[currentPage]">
+                  <td>{{rate.serial_no}}</td>
+                  <td>{{rate.activity_time}}</td>
+                  <td>{{rate.user_heart_rate}}</td>
+                </tr>
+              </tbody>
+            </table>
+              <nav class="pagination pull-right">
+                <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
+                  <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                      <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                  </li>
+
+                  <li ng-repeat="n in range(heartRate.length, itemsPerPage) "
+                      ng-class="{active: n == currentPage}" class="page-item"
+                  ng-click="setPage()">
+                      <a href ng-bind="n + 1" class="page-link">1</a>
+                  </li>
+
+                  <li ng-class="{disabled: (currentPage) == Math.floor(heartRate.length/itemsPerPage)}" class="page-item">
+                      <a href ng-click="nextPage()" class="page-link">Next »</a>
+                  </li>
+              </ul>
+          </nav>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <div class="card-deck">
+                <div class="input-group date" id="startHrDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="Start Date" ng-model="stHrDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <div class="input-group date" id="endHrDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="End Date" ng-model="endHrDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="searchHeartRate()">Search</button>
+            </div>
+        </div>
+        </div>
+     
+       
 </div>

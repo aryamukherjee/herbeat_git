@@ -23,6 +23,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
   }]).controller("mainCtrl", ['$scope', '$http', function ($scope, $http) {
       
+        $scope.usermessage = "";
         $scope.username = "";
         $scope.welcomeVisible = true;
         $scope.statVisible = false;
@@ -41,6 +42,27 @@ angular.module("app", ['chart.js','ngRoute'])
         .error(function(error) {
                 console.log('Error: ' + error);
         });
+        
+        $scope.sendMessage = function()
+        {
+            var config = {
+                headers : {
+                    'Content-Type': 'application/json'
+                }
+            }
+            $http.post('/api/sendmsgtodevice', JSON.stringify({
+                    username: $scope.username.username,
+                    message: $scope.usermessage
+            }), config)
+            .success(function(data) {
+                console.log(data);
+                $scope.usermessage = "";
+            })
+            .error(function(error) {
+                    console.log('Error: ' + error);
+            });
+            //console.log($scope.username.username + $scope.message);
+        };
     
     $scope.$watch('username', function(newVal, oldVal){
         if(newVal!=oldVal){
@@ -112,7 +134,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
     
     $scope.searchHeartrate = function(){
-        if($scope.hstDate <= $scope.hendDate)
+        if(new Date($scope.hstDate) <= new Date($scope.hendDate))
         {
             $http({
             url: '/api/gethratebyDate',
@@ -302,7 +324,7 @@ angular.module("app", ['chart.js','ngRoute'])
         getByPatientId(args.val);
     });
     $scope.searchUsergoals = function(){
-        if($scope.goalstDate <= $scope.goalendDate)
+        if(new Date($scope.goalstDate) <= new Date($scope.goalendDate))
         {
             $http({
             url: '/api/getusergoalsbyDate',
@@ -470,6 +492,7 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             $scope.activityResp = [];
+            console.log(data);
             for(var i = 0; i< data.length; i++)
             {
             	 $scope.activityResp.push({
@@ -496,7 +519,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
     
     $scope.searchActivity = function(){
-        if($scope.activitystDate <= $scope.activityendDate)
+        if(new Date($scope.activitystDate) <= new Date($scope.activityendDate))
         {
             $http({
             url: '/api/getuseractivitybyDate',
@@ -671,6 +694,7 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.emaResp.push({serial_no: i+1, user_selected_activity: data[i].user_selected_activity,
                     user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                     user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
+                    motivation_screen: data[i].motivation_screen,
                     activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
             }
             $scope.search();
@@ -688,7 +712,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
     
     $scope.searchEmaResp = function(){
-        if($scope.emastDate <= $scope.emaendDate)
+        if(new Date($scope.emastDate) <= new Date($scope.emaendDate))
         {
             $http({
             url: '/api/getemarespbyDate',
@@ -705,6 +729,7 @@ angular.module("app", ['chart.js','ngRoute'])
                     $scope.emaResp.push({serial_no: i+1, user_selected_activity: data[i].user_selected_activity,
                         user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                         user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
+                        motivation_screen: data[i].motivation_screen,
                         activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
                 }
                 $scope.search();
@@ -869,7 +894,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
     
   $scope.searchWatchedVideos = function(){
-        if($scope.stDate <= $scope.endDate)
+        if(new Date($scope.stDate) <= new Date($scope.endDate))
         {
             $http({
             url: '/api/getWatchedVideosbyDate',
@@ -1052,7 +1077,7 @@ angular.module("app", ['chart.js','ngRoute'])
     }
     
   $scope.searchBluetoothConFailed = function(){
-        if($scope.stDate <= $scope.endDate)
+        if(new Date($scope.stDate) <= new Date($scope.endDate))
         {
             $http({
             url: '/api/getBluetoothDiscbyDate',
@@ -1235,7 +1260,7 @@ angular.module("app", ['chart.js','ngRoute'])
     }
     
   $scope.searchRemainingBattery = function(){
-        if($scope.stDate <= $scope.endDate)
+        if(new Date($scope.stDate) <= new Date($scope.endDate))
         {
             $http({
             url: '/api/getRemainingBatterybyDate',
@@ -1418,7 +1443,7 @@ angular.module("app", ['chart.js','ngRoute'])
     }
     
   $scope.searchWifiDisc = function(){
-        if($scope.stDate <= $scope.endDate)
+        if(new Date($scope.stDate) <= new Date($scope.endDate))
         {
             $http({
             url: '/api/getWifiDiscbyDate',
@@ -1445,6 +1470,368 @@ angular.module("app", ['chart.js','ngRoute'])
             alert('Invalid dates selected!');
         }
   };
+   /*Added by Bharath*/
+  }]).controller("HeartRateCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
+    
+    //pagination
+    $scope.sort = {       
+        sortingOrder : 'id',
+        reverse : false
+    };
+    $scope.gap = 5;
+    
+    $scope.filteredItems = [];
+    $scope.groupedItems = [];
+    $scope.itemsPerPage = 5;
+    $scope.pagedRecords = [];
+    $scope.currentPage = 0;
+    //paination end
+    $scope.heartRate = [];
+    $scope.stHrDate = "";
+    $scope.endHrDate = "";
+    $('#startHrDate').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    $('#endHrDate').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    
+    //pagination logic
+        var searchMatch = function (haystack, needle) {
+            if (!needle) {
+                return true;
+            }
+            return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+        };
+
+        // init the filtered items
+        $scope.search = function () {
+            $scope.filteredItems = $filter('filter')($scope.heartRate, function (item) {
+                for(var attr in item) {
+                    if (searchMatch(item[attr], $scope.query))
+                        return true;
+                }
+                return false;
+            });
+            // take care of the sorting order
+            if ($scope.sort.sortingOrder !== '') {
+                $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sort.sortingOrder, $scope.sort.reverse);
+            }
+            $scope.currentPage = 0;
+            // now group by pages
+            $scope.groupToPages();
+        };
+
+
+        // calculate page in place
+        $scope.groupToPages = function () {
+            $scope.pagedRecords = [];
+
+            for (var i = 0; i < $scope.filteredItems.length; i++) {
+                if (i % $scope.itemsPerPage === 0) {
+                    $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
+                } else {
+                    $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+                }
+            }
+        };
+
+        $scope.range = function (size, pageSize) {
+            var ret = []; 
+            var end = 0;
+            var start = 0;
+            if(size == 0)
+            {
+                end = -1;
+            }
+            else if(size > pageSize)
+            {
+                if (size % pageSize == 0) {
+                    end = Math.floor(size/pageSize);
+                }
+                else
+                {
+                    end = Math.floor(size/pageSize) + 1
+                }
+            }
+            else
+            {
+                end = 1;
+            }
+            for (var i = start; i < end; i++) {
+                ret.push(i);
+            }        
+            return ret;
+        };
+
+        
+    
+    $scope.prevPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+
+    $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.pagedRecords.length - 1) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.setPage = function () {
+        $scope.currentPage = this.n;
+    };
+
+  function getByPatientId(val){
+      var today = new Date();
+      var startOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,00,00,00);
+    var endOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,23,59,59);
+      $http({
+            url: '/api/getheartRatebypid',
+            method: 'GET',
+            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+        })
+        .success(function(data) {
+            console.log(data);
+            $scope.heartRate = [];
+            for(var i = 0; i< data.length; i++)
+            {
+                $scope.heartRate.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                            user_heart_rate: data[i].user_heart_rate});
+            }
+            $scope.search();
+        })
+        .error(function(error) {
+                console.log('Error: ' + error);
+        });
+  };
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+  $scope.searchHeartRate = function(){
+        if(new Date($scope.stHrDate) <= new Date($scope.endHrDate))
+        {
+            $http({
+            url: '/api/getheartRatebyDate',
+            method: 'GET',
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stHrDate).toISOString(), enddate: new Date($scope.endHrDate).toISOString()}
+            })
+            .success(function(data) {
+                console.log(data);
+                $scope.heartRate = [];
+                $scope.stHrDate = "";
+                $scope.endHrDate = "";
+                for(var i = 0; i< data.length; i++)
+                {
+                    $scope.heartRate.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                                user_heart_rate: data[i].user_heart_rate});
+                }
+                $scope.search();
+            })
+            .error(function(error) {
+                    console.log('Error: ' + error);
+            });
+        }
+        else
+        {
+            alert('Invalid dates selected!');
+        }
+  };
+  
+  
+  }]).controller("messageCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
+    
+    //pagination
+    $scope.sort = {       
+        sortingOrder : 'id',
+        reverse : false
+    };
+    $scope.gap = 5;
+    
+    $scope.filteredItems = [];
+    $scope.groupedItems = [];
+    $scope.itemsPerPage = 5;
+    $scope.pagedRecords = [];
+    $scope.currentPage = 0;
+    //paination end
+    $scope.message = [];
+    $scope.stMsgDate = "";
+    $scope.endMsgDate = "";
+    $('#stMsgDateId').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    $('#endMsgDateId').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    
+    //pagination logic
+        var searchMatch = function (haystack, needle) {
+            if (!needle) {
+                return true;
+            }
+            return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+        };
+
+        // init the filtered items
+        $scope.search = function () {
+            $scope.filteredItems = $filter('filter')($scope.message, function (item) {
+                for(var attr in item) {
+                    if (searchMatch(item[attr], $scope.query))
+                        return true;
+                }
+                return false;
+            });
+            // take care of the sorting order
+            if ($scope.sort.sortingOrder !== '') {
+                $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sort.sortingOrder, $scope.sort.reverse);
+            }
+            $scope.currentPage = 0;
+            // now group by pages
+            $scope.groupToPages();
+        };
+
+
+        // calculate page in place
+        $scope.groupToPages = function () {
+            $scope.pagedRecords = [];
+
+            for (var i = 0; i < $scope.filteredItems.length; i++) {
+                if (i % $scope.itemsPerPage === 0) {
+                    $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
+                } else {
+                    $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+                }
+            }
+        };
+
+        $scope.range = function (size, pageSize) {
+            var ret = []; 
+            var end = 0;
+            var start = 0;
+            if(size == 0)
+            {
+                end = -1;
+            }
+            else if(size > pageSize)
+            {
+                if (size % pageSize == 0) {
+                    end = Math.floor(size/pageSize);
+                }
+                else
+                {
+                    end = Math.floor(size/pageSize) + 1
+                }
+            }
+            else
+            {
+                end = 1;
+            }
+            for (var i = start; i < end; i++) {
+                ret.push(i);
+            }        
+            return ret;
+        };
+
+        
+    
+    $scope.prevPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+
+    $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.pagedRecords.length - 1) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.setPage = function () {
+        $scope.currentPage = this.n;
+    };
+
+  function getByPatientId(val){
+      var today = new Date();
+      var startOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,00,00,00);
+    var endOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,23,59,59);
+      $http({
+            url: '/api/getmsgbypid',
+            method: 'GET',
+            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+        })
+        .success(function(data) {
+            console.log(data);
+            $scope.message = [];
+            for(var i = 0; i< data.length; i++)
+            {
+                $scope.message.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                            message : data[i].message});
+            }
+            $scope.search();
+        })
+        .error(function(error) {
+                console.log('Error: ' + error);
+        });
+  };
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+  $scope.searchMessage = function(){
+        if(new Date($scope.stMsgDate) <= new Date($scope.endMsgDate))
+        {
+            $http({
+            url: '/api/getmsgbyDate',
+            method: 'GET',
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toISOString(), enddate: new Date($scope.endMsgDate).toISOString()}
+            })
+            .success(function(data) {
+                console.log(data);
+                $scope.message = [];
+                $scope.stMsgDate = "";
+                $scope.endMsgDate = "";
+                for(var i = 0; i< data.length; i++)
+                {
+                    $scope.message.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                                message: data[i].message});
+                }
+                $scope.search();
+            })
+            .error(function(error) {
+                    console.log('Error: ' + error);
+            });
+        }
+        else
+        {
+            alert('Invalid dates selected!');
+        }
+  };
+  
 }]).controller("watchDiscCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -1600,7 +1987,7 @@ angular.module("app", ['chart.js','ngRoute'])
     }
     
   $scope.searchWatchDisc = function(){
-        if($scope.stDate <= $scope.endDate)
+        if(new Date($scope.stDate) <= new Date($scope.endDate))
         {
             $http({
             url: '/api/getWatchDiscbyDate',
