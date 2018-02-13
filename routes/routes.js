@@ -2,7 +2,7 @@ module.exports = function(app, conn, fadmin) {
 
     /*Added by Bharath */
     app.get('/api/gethratebypid', function(req, res) {
-        conn.query('SELECT user_heart_rate , activity_time FROM progress_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_heart_rate , DATE_FORMAT(activity_time,  "%m-%d-%y  %k:%i:%s") as activity_time FROM progress_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -16,7 +16,7 @@ module.exports = function(app, conn, fadmin) {
         });
     });
     app.get('/api/gethratebyDate', function(req, res) {
-        conn.query('SELECT user_heart_rate, activity_time FROM progress_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_heart_rate, DATE_FORMAT(activity_time,  "%m-%d-%y  %k:%i:%s") as activity_time FROM progress_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);

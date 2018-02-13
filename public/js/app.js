@@ -110,15 +110,18 @@ angular.module("app", ['chart.js','ngRoute'])
             console.log(data);
             var labels = [];
             var dat = [];
+			var chartcolors=[];
             $scope.labels = [];
             $scope.data = [[]];
             for(var i = 0; i< data.length; i++)
             {
-                labels.push(new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString());
+                labels.push(data[i].activity_time);
                 dat.push(data[i].user_heart_rate);
+				chartcolors.push('#FF5252');
             }
             $scope.labels = labels;
             $scope.data = dat;
+			$scope.colours = chartcolors;
         })
         .error(function(error) {
                 console.log('Error: ' + error);
@@ -145,17 +148,20 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log(data);
                 var labels = [];
                 var dat = [];
+				var chartcolors=[];
                 $scope.labels = [];
                 $scope.data = [[]];
                 $scope.hstDate = "";
                 $scope.hendDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    labels.push(new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString());
+                    labels.push(data[i].activity_time);
                     dat.push(data[i].user_heart_rate);
+					chartcolors.push('#FF5252');
                 }
                 $scope.labels = labels;
                 $scope.data = dat;
+				$scope.colours = chartcolors;
             })
             .error(function(error) {
                     console.log('Error: ' + error);
