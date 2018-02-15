@@ -1,0 +1,65 @@
+<div class="jumbotron jumbotron-fluid" style="height:-webkit-fill-available" ng-show="welcomeVisible">
+    <div class="container" style="text-align: center;">
+        <h1 class="display-4">Welcome to Herbeat App</h1>
+        <hr class="my-4">
+        <p class="lead">Get started by selecting a patient ID above.</p>
+  </div>
+</div>
+<div ng-show="statVisible">
+    <div class="card mb-3" ng-controller="sentMsgCtrl">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Sent Messages</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="rec in pagedRecords[currentPage]">
+                  <td>{{rec.message}}</td>
+                  <td>{{rec.date}}</td>
+                  <td>{{rec.time}}</td>
+                </tr>
+              </tbody>
+            </table>
+              <nav class="pagination pull-right">
+                  <ul class="pagination pagination-sm flex-sm-wrap" style="margin-bottom: 0px">
+                    <li ng-class="{disabled: currentPage == 0}" class="page-item">
+                        <a href ng-click="prevPage()" class="page-link">« Prev</a>
+                    </li>
+
+                    <li ng-repeat="n in range(messages.length, itemsPerPage) "
+                        ng-class="{active: n == currentPage}" class="page-item"
+                    ng-click="setPage()">
+                        <a href ng-bind="n + 1" class="page-link">1</a>
+                    </li>
+
+                    <li ng-class="{disabled: (currentPage) == Math.floor(records.length/itemsPerPage) + 1}" class="page-item">
+                        <a href ng-click="nextPage()" class="page-link">Next »</a>
+                    </li>
+                </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">
+            <div class="card-deck">
+                <div class="input-group date" id="msgstartDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" id="stSentMsgDateId" placeholder="Start Date" ng-model="stMsgDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <div class="input-group date" id="msgendDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" id="endSentMsgDateId" placeholder="End Date" ng-model="endMsgDate">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="searchSentMessage()">Search</button>
+            </div>
+        </div>
+      </div>
+</div>

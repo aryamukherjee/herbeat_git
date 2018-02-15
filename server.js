@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var admin = require("firebase-admin");
 var serviceAccount = require("./private_key/herbeat-4e03e-firebase-adminsdk-pa8e2-2c44358147.json");
 
-var port = process.env.PORT || 9990;
+var port = process.env.PORT || 9090;
 
 var morgan = require('morgan'); 
 var bodyParser = require('body-parser'); 

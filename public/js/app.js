@@ -10,6 +10,10 @@ angular.module("app", ['chart.js','ngRoute'])
         
         .when('/statistics', {
             templateUrl : 'views/statistics.html'
+        })
+        
+        .when('/sentMessages', {
+            templateUrl : 'views/sentMessages.html'
         });
                   
     // Configure all charts
@@ -101,6 +105,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             var labels = [];
             var dat = [];
 			var chartcolors=[];
@@ -144,8 +150,6 @@ angular.module("app", ['chart.js','ngRoute'])
 				var chartcolors=[];
                 $scope.labels = [];
                 $scope.data = [[]];
-                $scope.hstDate = "";
-                $scope.hendDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     labels.push(data[i].activity_time);
@@ -299,7 +303,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             $scope.goalResp = []
-          
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.goalendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
                 $scope.goalResp.push({
@@ -334,8 +339,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.goalResp = [];
-                $scope.goalstDate = "";
-                $scope.goalendDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.goalResp.push({
@@ -494,6 +497,8 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             $scope.activityResp = [];
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.activityendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
             	 $scope.activityResp.push({
@@ -531,8 +536,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.activityResp = [];
-                $scope.activitystDate = "";
-                $scope.activityendDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                      $scope.activityResp.push({
@@ -691,6 +694,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.emaendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.emaResp = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -727,8 +732,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.emaResp = [];
-                $scope.emastDate = "";
-                $scope.emaendDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.emaResp.push({serial_no: i+1, user_selected_activity: data[i].user_selected_activity,
@@ -880,6 +883,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.videos = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -913,8 +918,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.videos = [];
-                $scope.stDate = "";
-                $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.videos.push({serial_no: i+1, 
@@ -1067,6 +1070,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1101,8 +1106,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.records = [];
-                $scope.stDate = "";
-                $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
@@ -1255,6 +1258,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1289,8 +1294,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.records = [];
-                $scope.stDate = "";
-                $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
@@ -1443,6 +1446,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1477,8 +1482,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.records = [];
-                $scope.stDate = "";
-                $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
@@ -1628,6 +1631,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endHrDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.heartRate = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1661,8 +1666,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.heartRate = [];
-                $scope.stHrDate = "";
-                $scope.endHrDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.heartRate.push({serial_no: i+1, 
@@ -1813,6 +1816,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.message = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1846,8 +1851,6 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.message = [];
-                $scope.stMsgDate = "";
-                $scope.endMsgDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.message.push({serial_no: i+1, 
@@ -2001,6 +2004,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.watchrecords = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -2035,14 +2040,193 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
                 console.log(data);
                 $scope.watchrecords = [];
-                $scope.stDate = "";
-                $scope.endDate = "";
+
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.watchrecords.push({serial_no: i+1, 
 					activity_date: data[i].activity_date,
                     activity_time: data[i].activity_time
 					});
+                }
+                $scope.search();
+            })
+            .error(function(error) {
+                    console.log('Error: ' + error);
+            });
+        }
+        else
+        {
+            alert('Invalid dates selected!');
+        }
+  };
+}]).controller("sentMsgCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
+    
+    //pagination
+    $scope.sort = {       
+        sortingOrder : 'id',
+        reverse : false
+    };
+    $scope.gap = 5;
+    
+    $scope.filteredItems = [];
+    $scope.groupedItems = [];
+    $scope.itemsPerPage = 5;
+    $scope.pagedRecords = [];
+    $scope.currentPage = 0;
+    //paination end
+    $scope.messages = [];
+    $scope.stMsgDate = "";
+    $scope.endMsgDate = "";
+    $('#stSentMsgDateId').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    $('#endSentMsgDateId').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    
+    //pagination logic
+    var searchMatch = function (haystack, needle) {
+        if (!needle) {
+            return true;
+        }
+        return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+    };
+
+    // init the filtered items
+    $scope.search = function () {
+        $scope.filteredItems = $filter('filter')($scope.messages, function (item) {
+            for(var attr in item) {
+                if (searchMatch(item[attr], $scope.query))
+                    return true;
+            }
+            return false;
+        });
+        // take care of the sorting order
+        if ($scope.sort.sortingOrder !== '') {
+            $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sort.sortingOrder, $scope.sort.reverse);
+        }
+        $scope.currentPage = 0;
+        // now group by pages
+        $scope.groupToPages();
+    };
+
+
+    // calculate page in place
+    $scope.groupToPages = function () {
+        $scope.pagedRecords = [];
+
+        for (var i = 0; i < $scope.filteredItems.length; i++) {
+            if (i % $scope.itemsPerPage === 0) {
+                $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)] = [ $scope.filteredItems[i] ];
+            } else {
+                $scope.pagedRecords[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+            }
+        }
+    };
+
+    $scope.range = function (size, pageSize) {
+        var ret = []; 
+        var end = 0;
+        var start = 0;
+        if(size == 0)
+        {
+            end = -1;
+        }
+        else if(size > pageSize)
+        {
+            if (size % pageSize == 0) {
+                end = Math.floor(size/pageSize);
+            }
+            else
+            {
+                end = Math.floor(size/pageSize) + 1
+            }
+        }
+        else
+        {
+            end = 1;
+        }
+        for (var i = start; i < end; i++) {
+            ret.push(i);
+        }        
+        return ret;
+    };
+    
+    $scope.prevPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+
+    $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.pagedRecords.length - 1) {
+            $scope.currentPage++;
+        }
+    };
+
+    $scope.setPage = function () {
+        $scope.currentPage = this.n;
+    };
+
+  function getByPatientId(val){
+      var today = new Date();
+      var startOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,00,00,00);
+    var endOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,23,59,59);
+      $http({
+            url: '/api/getsentmsgbypid',
+            method: 'GET',
+            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+        })
+        .success(function(data) {
+            console.log(data);
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.messages = [];
+            for(var i = 0; i< data.length; i++)
+            {
+                $scope.messages.push({message: data[i].msg, 
+                    date: new Date(data[i].time_sent).toDateString(),
+                    time: new Date(data[i].time_sent).toLocaleTimeString()});
+            }
+            $scope.search();
+        })
+        .error(function(error) {
+                console.log('Error: ' + error);
+        });
+  };
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    
+  $scope.searchSentMessage = function(){
+        if(new Date($scope.stMsgDate) <= new Date($scope.endMsgDate))
+        {
+            $http({
+            url: '/api/getsentmsgbyDate',
+            method: 'GET',
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toISOString(), enddate: new Date($scope.endMsgDate).toISOString()}
+            })
+            .success(function(data) {
+                console.log(data);
+                $scope.messages = [];
+                for(var i = 0; i< data.length; i++)
+                {
+                    $scope.messages.push({message: data[i].msg, 
+                        date: new Date(data[i].time_sent).toDateString(),
+                        time: new Date(data[i].time_sent).toLocaleTimeString()});
                 }
                 $scope.search();
             })

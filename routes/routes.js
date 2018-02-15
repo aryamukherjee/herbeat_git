@@ -372,10 +372,22 @@ module.exports = function(app, conn, fadmin) {
                     .then(function(response){
                         console.log("success!", response);
                         res.json({status: 1});
+                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 1, new Date().toISOString().slice(0, 19).replace('T', ' ')], function (error, results) {
+                            if (error)
+                            {
+                                console.log(error);
+                            }
+                        });
                     })
                     .catch(function(error){
                         console.log("error!", error);
                         res.json({status: 0});
+                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 0, new Date().toISOString().slice(0, 19).replace('T', ' ')], function (error, results) {
+                            if (error)
+                            {
+                                console.log(error);
+                            }
+                        });
                     });
             }
         });
@@ -421,5 +433,35 @@ module.exports = function(app, conn, fadmin) {
             }
         });
     
+    });
+    
+    app.get('/api/getsentmsgbypid', function(req, res) {
+        conn.query('SELECT msg, time_sent FROM sent_push_msg WHERE username = ? and status = 1  AND time_sent BETWEEN  ? AND ? ORDER BY time_sent', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+            if (error)
+            {
+                console.log(error);
+            }
+            else
+            {
+                res.json(results);
+                console.log(results);
+                console.log('Fetched from DB.');
+            }
+        });
+    });
+    
+    app.get('/api/getsentmsgbyDate', function(req, res) {
+        conn.query('SELECT msg, time_sent FROM sent_push_msg WHERE lower(username) = lower(?) AND status = 1 AND time_sent BETWEEN  ? AND ? ORDER BY time_sent', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+            if (error)
+            {
+                console.log(error);
+            }
+            else
+            {
+                res.json(results);
+                console.log(results);
+                console.log('Fetched from DB.');
+            }
+        });
     });
 };
