@@ -16,8 +16,8 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Serial No</th>
-                  <th>Time</th>
+                  <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Readiness Level</th>
                   <th>Walk Target</th>
                   <th>Current Energy</th>
@@ -26,8 +26,8 @@
               </thead>
               <tbody>
                 <tr ng-repeat="resp in pagedRecords[currentPage]">
-                  <td>{{resp.serial_no}}</td>
-                  <td>{{resp.activity}}</td>
+                  <td>{{resp.activity_date}}</td>
+                  <td>{{resp.activity_time}}</td>
                   <td>{{resp.readiness_level}}</td>
                   <td>{{resp.walk_target}}</td>
                   <td>{{resp.current_energy}}</td>
@@ -79,8 +79,8 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" style="max-height: 200px">
               <thead>
                 <tr>
-                  <th>File No</th>
-                  <th>Time</th>
+                  <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Sitting Duration</th>
                   <th>Walking Duration</th>
                   <th>Step Count</th>
@@ -90,8 +90,8 @@
               </thead>
               <tbody style="height:200px;overflow-y:auto;width: 100%;">
                 <tr ng-repeat="resp in pagedRecords[currentPage]">
-                  <td>{{resp.serial_no}}</td>
-                  <td>{{resp.activity}}</td>
+                  <td>{{resp.activity_date}}</td>
+                  <td>{{resp.activity_time}}</td>
                   <td>{{resp.user_sitting_duration}}</td>
                   <td>{{resp.user_walking_duration}}</td>
                   <td>{{resp.user_step_count}}</td>
@@ -146,26 +146,28 @@
                     <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
                       <thead>
                         <tr>
-                          <th>Serial No</th>
-                          <th>Activity</th>
+                         <th>Activity Date</th>
+						 <th>Activity Time</th>
+                         <th>Activity</th>
                           <th>Company</th>
-                          <th>Curr. Location</th>
+                          <th>Location</th>
                           <th>Food Habit</th>
                           <th>Feelings</th>
                           <th>Motivation</th>
-                          <th>Time</th>
+                          
                         </tr>
                       </thead>
                       <tbody>
                         <tr ng-repeat="resp in pagedRecords[currentPage]">
-                          <td>{{resp.serial_no}}</td>
+                          <td>{{resp.activity_date}}</td>
+                          <td>{{resp.activity_time}}</td>
                           <td>{{resp.user_selected_activity}}</td>
                           <td>{{resp.user_company}}</td>
                           <td>{{resp.user_curr_location}}</td>
                           <td>{{resp.user_food_habit}}</td>
                           <td>{{resp.user_feelings}}</td>
                           <td>{{resp.motivation_screen}}</td>
-                          <td>{{resp.activity_time}}</td>
+                          
                         </tr>
                       </tbody>
                     </table>
@@ -212,7 +214,7 @@
           <i class="fa fa-area-chart"></i> Heart Rate</div>
         <div class="card-body">
           <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" 
-	 chart-colors="colours"></canvas> 
+	   chart-colors="colours"></canvas> 
         </div>
             <div class="card-footer small text-muted">
                 <div class="card-deck">
@@ -240,14 +242,14 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Serial No</th>
-                  <th>Time</th>
+                  <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Video Title</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="video in pagedRecords[currentPage]">
-                  <td>{{video.serial_no}}</td>
+                  <td>{{video.activity_date}}</td>
                   <td>{{video.activity_time}}</td>
                   <td>{{video.video_title}}</td>
                 </tr>
@@ -302,14 +304,14 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                  <th>Serial No</th>
-                  <th>Time</th>
+                  <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Heart Rate</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rate in pagedRecords[currentPage]">
-                  <td>{{rate.serial_no}}</td>
+                  <td>{{rate.activity_date}}</td>
                   <td>{{rate.activity_time}}</td>
                   <td>{{rate.user_heart_rate}}</td>
                 </tr>

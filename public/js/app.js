@@ -13,14 +13,7 @@ angular.module("app", ['chart.js','ngRoute'])
         });
                   
     // Configure all charts
-    ChartJsProvider.setOptions({
-      chartColors: ['#FF5252', '#FF5252'],
-      responsive: true
-    });
-    // Configure all line charts
-    ChartJsProvider.setOptions('line', {
-      showLines: true
-    });
+    
   }]).controller("mainCtrl", ['$scope', '$http', function ($scope, $http) {
       
         $scope.usermessage = "";
@@ -313,7 +306,8 @@ angular.module("app", ['chart.js','ngRoute'])
                     readiness_level: data[i].user_readiness_level, 
                     walk_target: data[i].user_walk_target,
                     current_energy: data[i].user_current_energy,
-                    activity: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                    activity_date: data[i].activity_date,
+					activity_time: data[i].activity_time,
                     serial_no : i+1});
             }
             $scope.search();
@@ -348,7 +342,8 @@ angular.module("app", ['chart.js','ngRoute'])
                         readiness_level: data[i].user_readiness_level, 
                         walk_target: data[i].user_walk_target,
                         current_energy: data[i].user_current_energy,
-                        activity: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                        activity_date: data[i].activity_date,
+					    activity_time: data[i].activity_time,
                         serial_no : i+1});
                 }
                 $scope.search();
@@ -505,7 +500,8 @@ angular.module("app", ['chart.js','ngRoute'])
             		 user_sitting_duration: data[i].user_sitting_duration, 
             		 user_walking_duration: data[i].user_walking_duration,
             		 user_step_count: data[i].user_step_count,
-            		 activity: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+            		 activity_date: data[i].activity_date,
+                     activity_time: data[i].activity_time,
             		 serial_no : i+1,
             		 distance_covered_in_miles : data[i].distance_covered_in_miles });
             		
@@ -543,7 +539,8 @@ angular.module("app", ['chart.js','ngRoute'])
                              user_sitting_duration: data[i].user_sitting_duration, 
                              user_walking_duration: data[i].user_walking_duration,
                              user_step_count: data[i].user_step_count,
-                             activity: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                             activity_date: data[i].activity_date,
+                             activity_time: data[i].activity_time,
                              serial_no : i+1,
                              distance_covered_in_miles : data[i].distance_covered_in_miles });
 
@@ -701,7 +698,9 @@ angular.module("app", ['chart.js','ngRoute'])
                     user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                     user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
                     motivation_screen: data[i].motivation_screen,
-                    activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                    activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time
+					});
             }
             $scope.search();
         })
@@ -736,7 +735,9 @@ angular.module("app", ['chart.js','ngRoute'])
                         user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                         user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
                         motivation_screen: data[i].motivation_screen,
-                        activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                        activity_date: data[i].activity_date,
+                        activity_time: data[i].activity_time
+						});
                 }
                 $scope.search();
             })
@@ -882,7 +883,9 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.videos = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.videos.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                $scope.videos.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time,
                             video_title: data[i].video_title});
             }
             $scope.search();
@@ -914,7 +917,9 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.videos.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                    $scope.videos.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time,
                                 video_title: data[i].video_title});
                 }
                 $scope.search();
@@ -1065,7 +1070,10 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                $scope.records.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time
+				});
             }
             $scope.search();
         })
@@ -1097,7 +1105,10 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                    $scope.records.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time
+					});
                 }
                 $scope.search();
             })
@@ -1247,7 +1258,9 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                $scope.records.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time,
                                         remaining_battery: data[i].remaining_battery});
             }
             $scope.search();
@@ -1280,7 +1293,9 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                    $scope.records.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time,
                                         remaining_battery: data[i].remaining_battery});
                 }
                 $scope.search();
@@ -1431,7 +1446,10 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                $scope.records.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time
+				});
             }
             $scope.search();
         })
@@ -1463,7 +1481,10 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.records.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                    $scope.records.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time
+					});
                 }
                 $scope.search();
             })
@@ -1610,7 +1631,9 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.heartRate = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.heartRate.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                $scope.heartRate.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time,
                             user_heart_rate: data[i].user_heart_rate});
             }
             $scope.search();
@@ -1642,7 +1665,9 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endHrDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.heartRate.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                    $scope.heartRate.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time,
                                 user_heart_rate: data[i].user_heart_rate});
                 }
                 $scope.search();
@@ -1791,7 +1816,9 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.message = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.message.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                $scope.message.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time,
                             message : data[i].message});
             }
             $scope.search();
@@ -1823,7 +1850,9 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endMsgDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.message.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString(),
+                    $scope.message.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time,
                                 message: data[i].message});
                 }
                 $scope.search();
@@ -1975,7 +2004,10 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.watchrecords = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.watchrecords.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                $scope.watchrecords.push({serial_no: i+1, 
+				activity_date: data[i].activity_date,
+                activity_time: data[i].activity_time
+				});
             }
             $scope.search();
         })
@@ -2007,7 +2039,10 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.endDate = "";
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.watchrecords.push({serial_no: i+1, activity_time: new Date(data[i].activity_time).toDateString() + " " + new Date(data[i].activity_time).toLocaleTimeString()});
+                    $scope.watchrecords.push({serial_no: i+1, 
+					activity_date: data[i].activity_date,
+                    activity_time: data[i].activity_time
+					});
                 }
                 $scope.search();
             })

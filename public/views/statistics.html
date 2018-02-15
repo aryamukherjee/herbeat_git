@@ -16,15 +16,15 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Serial No</th>
-                  <th>Time</th>
+                   <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Message</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rec in pagedRecords[currentPage]">
-                    <td>{{rec.serial_no}}</td>
-                  <td>{{rec.activity_time}}</td>
+                   <td>{{rec.activity_date}}</td>
+                   <td>{{rec.activity_time}}</td>
                   <td>{{rec.message}}</td>
                 </tr>
               </tbody>
@@ -50,12 +50,12 @@
         </div>
         <div class="card-footer small text-muted">
             <div class="card-deck">
-                <div class="input-group date" id="msgstartDate" style="width:150px; margin-right: 5px">
+                <div class="input-group date" id="stMsgDateId" style="width:150px; margin-right: 5px">
                     <input type="text" class="form-control" id="stMsgDateId" placeholder="Start Date" ng-model="stMsgDate">
                     <span class="input-group-addon">
                         <i class="fa fa-calendar" aria-hidden="true"></i></span>
                 </div>
-                <div class="input-group date" id="msgendDate" style="width:150px; margin-right: 5px">
+                <div class="input-group date" id="endMsgDateId" style="width:150px; margin-right: 5px">
                     <input type="text" class="form-control" id="endMsgDateId" placeholder="End Date" ng-model="endMsgDate">
                     <span class="input-group-addon">
                         <i class="fa fa-calendar" aria-hidden="true"></i></span>
@@ -75,14 +75,14 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Serial No</th>
-                  <th>Time</th>
+                    <th>Activity Date</th>
+                  <th>Activity Time</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rec in pagedRecords[currentPage]">
-                    <td>{{rec.serial_no}}</td>
-                  <td>{{rec.activity_time}}</td>
+                   <td>{{rec.activity_date}}</td>
+                   <td>{{rec.activity_time}}</td>
                 </tr>
               </tbody>
             </table>
@@ -130,15 +130,15 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Serial No</th>
-                  <th>Time</th>
+                    <th>Activity Date</th>
+                  <th>Activity Time</th>
                   <th>Remaining Battery(%)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rec in pagedRecords[currentPage]">
-                    <td>{{rec.serial_no}}</td>
-                  <td>{{rec.activity_time}}</td>
+                    <td>{{rec.activity_date}}</td>
+                    <td>{{rec.activity_time}}</td>
                   <td>{{rec.remaining_battery}}</td>
                 </tr>
               </tbody>
@@ -190,14 +190,14 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Serial No</th>
-                  <th>Time</th>
+                    <th>Activity Date</th>
+                  <th>Activity Time</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rec in pagedRecords[currentPage]">
-                    <td>{{rec.serial_no}}</td>
-                  <td>{{rec.activity_time}}</td>
+                   <td>{{rec.activity_date}}</td>
+                   <td>{{rec.activity_time}}</td>
                 </tr>
               </tbody>
             </table>
@@ -245,14 +245,14 @@
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
               <thead>
                 <tr>
-                    <th>Serial No</th>
-                  <th>Time</th>
+                    <th>Activity Date</th>
+                  <th>Activity Time</th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="rec in pagedRecords[currentPage]">
-                    <td>{{rec.serial_no}}</td>
-                  <td>{{rec.activity_time}}</td>
+                   <td>{{rec.activity_date}}</td>
+                   <td>{{rec.activity_time}}</td>
                 </tr>
               </tbody>
             </table>
