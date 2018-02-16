@@ -49,7 +49,8 @@ angular.module("app", ['chart.js','ngRoute'])
             }
             $http.post('/api/sendmsgtodevice', JSON.stringify({
                     username: $scope.username.username,
-                    message: $scope.usermessage
+                    message: $scope.usermessage,
+                    date: new Date().toISOString().slice(0, 19).replace('T', ' ')
             }), config)
             .success(function(data) {
                 console.log(data);

@@ -372,7 +372,7 @@ module.exports = function(app, conn, fadmin) {
                     .then(function(response){
                         console.log("success!", response);
                         res.json({status: 1});
-                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 1, new Date().toISOString().slice(0, 19).replace('T', ' ')], function (error, results) {
+                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 1, req.body.date], function (error, results) {
                             if (error)
                             {
                                 console.log(error);
@@ -382,7 +382,7 @@ module.exports = function(app, conn, fadmin) {
                     .catch(function(error){
                         console.log("error!", error);
                         res.json({status: 0});
-                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 0, new Date().toISOString().slice(0, 19).replace('T', ' ')], function (error, results) {
+                        conn.query('INSERT INTO sent_push_msg(username, msg, status, time_sent) VALUES(?, ?, ?, ?)', [req.body.username, req.body.message, 0, req.body.date], function (error, results) {
                             if (error)
                             {
                                 console.log(error);
