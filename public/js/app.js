@@ -72,7 +72,7 @@ angular.module("app", ['chart.js','ngRoute'])
     });
 }]).controller("heartRateCtrl", ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
 
-  $scope.labels = [];
+  /* $scope.labels = [];
   $scope.series = [];
   $scope.data = [
     []
@@ -160,6 +160,182 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.labels = labels;
                 $scope.data = dat;
 				$scope.colours = chartcolors;
+            })
+            .error(function(error) {
+                    console.log('Error: ' + error);
+            });
+        }
+        else
+        {
+            alert('Invalid dates selected!');
+        }
+  }; */
+  
+  
+  $scope.labels = [];
+  $scope.series = ['Minimum', 'Average', 'Maximum'];
+  $scope.data = [];
+	
+	$scope.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }, { yAxisID: 'y-axis-3' }];
+	 
+  
+  $scope.hstDate = "";
+    $scope.hendDate = "";
+    $('#hstartDate').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+    $('#hendDate').datepicker({
+        format: "mm-dd-yyyy",
+        autoclose: true
+    });
+  
+  function getByPatientId(val){
+      var today = new Date();
+      var startOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,00,00,00);
+        var endOfDayToday = new Date(today.getFullYear()
+                           ,today.getMonth()
+                           ,today.getDate()
+                           ,23,59,59);
+      $http({
+            url: '/api/gethratebypid',
+            method: 'GET',
+            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+        })
+        .success(function(data) {
+            console.log(data);
+            var labels = [[]];
+            var dat = [[]];
+			var chartcolors=[[]];
+            $scope.labels = [[]];
+            $scope.data = [[]];
+			var data1 = [[]];
+			var data2 = [[]];
+			var data3 = [[]];
+            for(var i = 0; i< data.length; i++)
+            {
+                labels.push((data[i].activity_time));
+                data1.push(data[i].mine);
+				data2.push(data[i].avge);
+				data3.push(data[i].maxe);
+				chartcolors.push('#FF5252');
+            }
+            $scope.labels = labels;
+            $scope.data = [data1,data2,data3];
+			$scope.colours = chartcolors;
+			
+			$scope.options = {
+		 
+		 tooltips: {
+                callbacks: {
+        title: function(tooltipItem, data,labels,index) {
+			
+          return data['labels'][tooltipItem[0]['index']];
+        }
+        }
+		},
+    scales: {
+    
+	  xAxes: [
+        {
+          
+		  position: 'bottom',
+          ticks: {
+          userCallback:  function(label, index, labels) {
+					   
+					   if(labels.length>1){
+					  return labels[index].split(" ")[1];
+					   }
+					  
+    }
+        }
+		  }
+		
+      ]
+    }
+  };
+        })
+		
+		
+        .error(function(error) {
+                console.log('Error: ' + error);
+        });
+    
+    };
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    $scope.searchHeartrate = function(){
+		
+        if(new Date($scope.hstDate) <= new Date($scope.hendDate))
+        {
+            $http({
+            url: '/api/gethratebyDate',
+            method: 'GET',
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.hstDate).toISOString(), enddate: new Date($scope.hendDate).toISOString()}
+            })
+            .success(function(data) {
+				debugger;
+                console.log(data);
+                var labels = [" "];
+                var dat = [[]];
+				var chartcolors=[];
+                $scope.labels = [" "];
+                $scope.data = [[]];
+                var data1 = [[]];
+			var data2 = [[]];
+			var data3 = [[]];
+            for(var i = 0; i< data.length; i++)
+            {
+                labels.push((data[i].activity_time));
+                data1.push(data[i].mine);
+				data2.push(data[i].avge);
+				data3.push(data[i].maxe);
+				chartcolors.push('#FF5252');
+            }
+            $scope.labels = labels;
+            $scope.data = [data1,data2,data3];
+			$scope.colours = chartcolors;
+			
+			$scope.options = {
+		 
+		 tooltips: {
+                callbacks: {
+        title: function(tooltipItem, data,labels,index) {
+			
+          return data['labels'][tooltipItem[0]['index']];
+        }
+        }
+		},
+    scales: {
+    
+	  xAxes: [
+        {
+          
+		  position: 'bottom',
+          ticks: {
+          userCallback:  function(label, index, labels) {
+					   
+					   if(labels.length>1){
+					  return labels[index].split(" ")[1];
+					   }
+					  
+    }
+        }
+		  }
+		
+      ]
+    }
+  };
+			
             })
             .error(function(error) {
                     console.log('Error: ' + error);
