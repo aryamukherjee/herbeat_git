@@ -682,8 +682,8 @@ angular.module("app", ['chart.js','ngRoute'])
             		 user_sitting_duration: data[i].user_sitting_duration, 
             		 user_walking_duration: data[i].user_walking_duration,
             		 user_step_count: data[i].user_step_count,
-            		 activity_date: data[i].activity_date,
-                     activity_time: data[i].activity_time,
+            		 activity_date: data[i].activity_time.toLocaleDateString(),
+                     activity_time: data[i].activity_time.toISOString().slice(11, 19),
             		 serial_no : i+1,
             		 distance_covered_in_miles : data[i].distance_covered_in_miles });
             		
