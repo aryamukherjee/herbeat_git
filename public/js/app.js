@@ -2370,8 +2370,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.messages.push({message: data[i].msg, 
-                    date: new Date(data[i].time_sent).toDateString(),
-                    time: new Date(data[i].time_sent).toLocaleTimeString()});
+                    date: new Date(data[i].sent_date).toLocaleDateString(),
+                    time: data[i].sent_time});
             }
             $scope.search();
         })
@@ -2402,8 +2402,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.messages.push({message: data[i].msg, 
-                        date: new Date(data[i].time_sent).toDateString(),
-                        time: new Date(data[i].time_sent).toLocaleTimeString()});
+                        date: new Date(data[i].sent_date).toLocaleDateString(),
+                        time: data[i].sent_time});
                 }
                 $scope.search();
             })
