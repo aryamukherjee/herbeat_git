@@ -50,7 +50,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http.post('/api/sendmsgtodevice', JSON.stringify({
                     username: $scope.username.username,
                     message: $scope.usermessage,
-                    date: new Date().toISOString().slice(0, 10) + " " + new Date().toTimeString().slice(0, 8)
+                    date: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + new Date().toTimeString().slice(0, 8)
             }), config)
             .success(function(data) {
                 console.log(data);
@@ -2360,7 +2360,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getsentmsgbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -2394,7 +2394,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getsentmsgbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toISOString(), enddate: new Date($scope.endMsgDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
