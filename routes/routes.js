@@ -140,7 +140,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getuseractivitybyDate', function(req, res) {
-        conn.query('select DISTINCT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, activity_time from physical_activity p1 right join (select vdate, max(activity_time) as maxdate from physical_activity where username = ? group by vdate) p2 on p2.maxdate = p1.activity_time where p2.vdate between ? and ? order by activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DISTINCT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, activity_time from physical_activity p1 right join (select vdate, max(activity_time) as maxdate from physical_activity where username = ? group by vdate) p2 on p2.maxdate = p1.activity_time where p2.vdate between ? and ? order by activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
