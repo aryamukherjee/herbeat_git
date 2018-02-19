@@ -207,12 +207,12 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
-            var labels = [[]];
-            var dat = [[]];
-			var chartcolors=[[]];
-            $scope.labels = [[]];
-            $scope.data = [[]];
-			var data1 = [[]];
+              var labels = [" "];
+                var dat = [[]];
+				var chartcolors=[];
+                $scope.labels = [" "];
+                $scope.data = [[]];
+                var data1 = [[]];
 			var data2 = [[]];
 			var data3 = [[]];
             for(var i = 0; i< data.length; i++)
@@ -221,7 +221,7 @@ angular.module("app", ['chart.js','ngRoute'])
                 data1.push(data[i].mine);
 				data2.push(data[i].avge);
 				data3.push(data[i].maxe);
-				chartcolors.push('#FF5252');
+				chartcolors.push('#FF5252','#FF5252','#FF5252');
             }
             $scope.labels = labels;
             $scope.data = [data1,data2,data3];
@@ -285,7 +285,7 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
 				debugger;
                 console.log(data);
-                var labels = [" "];
+                  var labels = [" "];
                 var dat = [[]];
 				var chartcolors=[];
                 $scope.labels = [" "];
@@ -299,7 +299,7 @@ angular.module("app", ['chart.js','ngRoute'])
                 data1.push(data[i].mine);
 				data2.push(data[i].avge);
 				data3.push(data[i].maxe);
-				chartcolors.push('#FF5252');
+				chartcolors.push('#FF5252','#FF5252','#FF5252');
             }
             $scope.labels = labels;
             $scope.data = [data1,data2,data3];
