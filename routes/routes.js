@@ -32,7 +32,7 @@ module.exports = function(app, conn, fadmin) {
     /*Added by Bharath for Message*/
     
     app.get('/api/getmsgbypid', function(req, res) {
-        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time , message from feedback WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time , message from feedback WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -46,7 +46,7 @@ module.exports = function(app, conn, fadmin) {
         });
     });
     app.get('/api/getmsgbyDate', function(req, res) {
-        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time , message from feedback WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time , message from feedback WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -63,7 +63,7 @@ module.exports = function(app, conn, fadmin) {
     /*End*/
 	
 	app.get('/api/getheartRatebypid', function(req, res) {
-        conn.query('SELECT user_heart_rate , DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM heartrate_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_heart_rate , DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM heartrate_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -77,7 +77,7 @@ module.exports = function(app, conn, fadmin) {
         });
     });
     app.get('/api/getheartRatebyDate', function(req, res) {
-        conn.query('SELECT user_heart_rate, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM heartrate_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_heart_rate, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM heartrate_checking WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -95,7 +95,7 @@ module.exports = function(app, conn, fadmin) {
     /*Ends*/
     
     app.get('/api/getgoalsbypid', function(req, res) {
-        conn.query('SELECT user_readiness_level, user_walk_target, user_current_energy, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM set_goals WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_readiness_level, user_walk_target, user_current_energy, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM set_goals WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -110,7 +110,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getusergoalsbyDate', function(req, res) {
-        conn.query('SELECT user_readiness_level, user_walk_target, user_current_energy, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM set_goals WHERE lower(username) = lower(?)  AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_readiness_level, user_walk_target, user_current_energy, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM set_goals WHERE lower(username) = lower(?)  AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -125,7 +125,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getactivitesbypid', function(req, res) {
-        conn.query('SELECT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM physical_activity WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc LIMIT 1', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM physical_activity WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc LIMIT 1', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -140,7 +140,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getuseractivitybyDate', function(req, res) {
-        conn.query('select DISTINCT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, activity_time from physical_activity p1 right join (select vdate, max(activity_time) as maxdate from physical_activity where username = ? group by vdate) p2 on p2.maxdate = p1.activity_time where p2.vdate between ? and ? order by activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DISTINCT user_sitting_duration, user_walking_duration, user_step_count, distance_covered_in_miles, user_heart_rate, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time from physical_activity p1 right join (select vdate, max(activity_time) as maxdate from physical_activity where username = ? group by vdate) p2 on p2.maxdate = p1.activity_time where p2.vdate between ? and ? order by activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -155,7 +155,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getEMAresbypid', function(req, res) {
-        conn.query('SELECT user_selected_activity, user_company, user_curr_location, user_food_habit, user_feelings, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time , motivation_screen FROM ema_response WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_selected_activity, user_company, user_curr_location, user_food_habit, user_feelings, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time , motivation_screen FROM ema_response WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -170,7 +170,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getemarespbyDate', function(req, res) {
-        conn.query('SELECT user_selected_activity, user_company, user_curr_location, user_food_habit, user_feelings, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time , motivation_screen FROM ema_response WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT user_selected_activity, user_company, user_curr_location, user_food_habit, user_feelings, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time , motivation_screen FROM ema_response WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -185,7 +185,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWatchedVideosbypid', function(req, res) {
-        conn.query('SELECT video_title, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM watching_video WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT video_title, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM watching_video WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -200,7 +200,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWatchedVideosbyDate', function(req, res) {
-        conn.query('SELECT video_title, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM watching_video WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT video_title, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM watching_video WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -215,7 +215,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getBluetoothDiscbypid', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM bluetooth_connection_failed WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM bluetooth_connection_failed WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -230,7 +230,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getBluetoothDiscbyDate', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM bluetooth_connection_failed WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM bluetooth_connection_failed WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -245,7 +245,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getRemainingBatterybypid', function(req, res) {
-        conn.query('SELECT remaining_battery, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM phonebattery_low WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT remaining_battery, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM phonebattery_low WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -260,7 +260,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getRemainingBatterybyDate', function(req, res) {
-        conn.query('SELECT remaining_battery, DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM phonebattery_low WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT remaining_battery, DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM phonebattery_low WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -275,7 +275,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWifiDiscbypid', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM wifi_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM wifi_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -290,7 +290,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWifiDiscbyDate', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM wifi_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM wifi_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -305,7 +305,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWatchDiscbypid', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM watch_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM watch_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -320,7 +320,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getWatchDiscbyDate', function(req, res) {
-        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%y") as activity_date ,DATE_FORMAT(activity_time,  "%k:%i:%s") as activity_time  FROM watch_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT DATE_FORMAT(activity_time,  "%m/%d/%Y") as date, DATE_FORMAT(activity_time,  "%T") as time, activity_time  FROM watch_disconnected WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? ORDER BY activity_time desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -359,9 +359,8 @@ module.exports = function(app, conn, fadmin) {
             {
                 var token = results[0].token;
                 var payload = {
-                    notification: {
-                        title: "Notification",
-                        body: req.body.message
+                    data: {
+                        message : req.body.message 
                     }
                 };
                 var options = {
@@ -436,7 +435,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getsentmsgbypid', function(req, res) {
-        conn.query('SELECT msg, DATE_FORMAT(time_sent,  "%m/%d/%y") as sent_date, DATE_FORMAT(time_sent,  "%k:%i:%s") as sent_time FROM sent_push_msg WHERE username = ? and status = 1  AND time_sent BETWEEN  ? AND ? ORDER BY time_sent', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT msg, DATE_FORMAT(time_sent,  "%m/%d/%Y") as date, DATE_FORMAT(time_sent,  "%T") as time, time_sent FROM sent_push_msg WHERE username = ? and status = 1  AND time_sent BETWEEN  ? AND ? ORDER BY time_sent desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -451,7 +450,7 @@ module.exports = function(app, conn, fadmin) {
     });
     
     app.get('/api/getsentmsgbyDate', function(req, res) {
-        conn.query('SELECT msg, DATE_FORMAT(time_sent,  "%m/%d/%y") as sent_date, DATE_FORMAT(time_sent,  "%k:%i:%s") as sent_time FROM sent_push_msg WHERE lower(username) = lower(?) AND status = 1 AND time_sent BETWEEN  ? AND ? ORDER BY time_sent', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('SELECT msg, DATE_FORMAT(time_sent,  "%m/%d/%Y") as date, DATE_FORMAT(time_sent,  "%T") as time, time_sent FROM sent_push_msg WHERE lower(username) = lower(?) AND status = 1 AND time_sent BETWEEN  ? AND ? ORDER BY time_sent desc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);

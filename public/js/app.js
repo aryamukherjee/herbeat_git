@@ -476,7 +476,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getgoalsbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             $scope.goalResp = []
@@ -488,8 +488,8 @@ angular.module("app", ['chart.js','ngRoute'])
                     readiness_level: data[i].user_readiness_level, 
                     walk_target: data[i].user_walk_target,
                     current_energy: data[i].user_current_energy,
-                    activity_date: data[i].activity_date,
-					activity_time: data[i].activity_time,
+                    activity_date: data[i].date,
+                    activity_time: data[i].time,
                     serial_no : i+1});
             }
             $scope.search();
@@ -511,7 +511,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getusergoalsbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.goalstDate).toISOString(), enddate: new Date($scope.goalendDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.goalstDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.goalstDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.goalstDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.goalendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.goalendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.goalendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -522,8 +522,8 @@ angular.module("app", ['chart.js','ngRoute'])
                         readiness_level: data[i].user_readiness_level, 
                         walk_target: data[i].user_walk_target,
                         current_energy: data[i].user_current_energy,
-                        activity_date: data[i].activity_date,
-					    activity_time: data[i].activity_time,
+                        activity_date: data[i].date,
+					    activity_time: data[i].time,
                         serial_no : i+1});
                 }
                 $scope.search();
@@ -669,7 +669,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getactivitesbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             $scope.activityResp = [];
@@ -682,8 +682,8 @@ angular.module("app", ['chart.js','ngRoute'])
             		 user_sitting_duration: data[i].user_sitting_duration, 
             		 user_walking_duration: data[i].user_walking_duration,
             		 user_step_count: data[i].user_step_count,
-            		 activity_date: data[i].activity_date,
-                     activity_time: data[i].activity_time,
+            		 activity_date: data[i].date,
+                         activity_time: data[i].time,
             		 serial_no : i+1,
             		 distance_covered_in_miles : data[i].distance_covered_in_miles });
             		
@@ -708,7 +708,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getuseractivitybyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.activitystDate).toISOString(), enddate: new Date($scope.activityendDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.activitystDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.activitystDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.activitystDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.activityendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.activityendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.activityendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -719,8 +719,8 @@ angular.module("app", ['chart.js','ngRoute'])
                              user_sitting_duration: data[i].user_sitting_duration, 
                              user_walking_duration: data[i].user_walking_duration,
                              user_step_count: data[i].user_step_count,
-                             activity_date: new Date(data[i].activity_time).toLocaleDateString(),
-                             activity_time: new Date(data[i].activity_time).toISOString().slice(11, 19),
+                             activity_date: data[i].date,
+                             activity_time: data[i].time,
                              serial_no : i+1,
                              distance_covered_in_miles : data[i].distance_covered_in_miles });
 
@@ -867,7 +867,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getEMAresbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -880,8 +880,8 @@ angular.module("app", ['chart.js','ngRoute'])
                     user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                     user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
                     motivation_screen: data[i].motivation_screen,
-                    activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time
+                    activity_date: data[i].date,
+                    activity_time: data[i].time
 					});
             }
             $scope.search();
@@ -904,7 +904,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getemarespbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.emastDate).toISOString(), enddate: new Date($scope.emaendDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.emastDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.emastDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.emastDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.emaendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.emaendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.emaendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -915,8 +915,8 @@ angular.module("app", ['chart.js','ngRoute'])
                         user_company: data[i].user_company, user_curr_location: data[i].user_curr_location,
                         user_food_habit: data[i].user_food_habit, user_feelings: data[i].user_feelings,
                         motivation_screen: data[i].motivation_screen,
-                        activity_date: data[i].activity_date,
-                        activity_time: data[i].activity_time
+                        activity_date: data[i].date,
+                        activity_time: data[i].time
 						});
                 }
                 $scope.search();
@@ -1056,7 +1056,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getWatchedVideosbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1066,8 +1066,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.videos.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time,
+				activity_date: data[i].date,
+                activity_time: data[i].time,
                             video_title: data[i].video_title});
             }
             $scope.search();
@@ -1090,7 +1090,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getWatchedVideosbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toISOString(), enddate: new Date($scope.endDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1098,8 +1098,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.videos.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time,
+					activity_date: data[i].date,
+                    activity_time: data[i].time,
                                 video_title: data[i].video_title});
                 }
                 $scope.search();
@@ -1243,7 +1243,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getBluetoothDiscbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1253,8 +1253,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.records.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time
+				activity_date: data[i].date,
+                activity_time: data[i].time
 				});
             }
             $scope.search();
@@ -1278,7 +1278,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getBluetoothDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toISOString(), enddate: new Date($scope.endDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1286,8 +1286,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time
+					activity_date: data[i].date,
+                    activity_time: data[i].time
 					});
                 }
                 $scope.search();
@@ -1431,7 +1431,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getRemainingBatterybypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1441,8 +1441,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.records.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time,
+				activity_date: data[i].date,
+                activity_time: data[i].time,
                                         remaining_battery: data[i].remaining_battery});
             }
             $scope.search();
@@ -1466,7 +1466,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getRemainingBatterybyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toISOString(), enddate: new Date($scope.endDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1474,8 +1474,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time,
+					activity_date: data[i].date,
+                    activity_time: data[i].time,
                                         remaining_battery: data[i].remaining_battery});
                 }
                 $scope.search();
@@ -1619,7 +1619,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getWifiDiscbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1629,8 +1629,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.records.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time
+				activity_date: data[i].date,
+                activity_time: data[i].time
 				});
             }
             $scope.search();
@@ -1654,7 +1654,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getWifiDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toISOString(), enddate: new Date($scope.endDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1662,8 +1662,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.records.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time
+					activity_date: data[i].date,
+                    activity_time: data[i].time
 					});
                 }
                 $scope.search();
@@ -1804,7 +1804,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getheartRatebypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1814,8 +1814,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.heartRate.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time,
+				activity_date: data[i].date,
+                activity_time: data[i].time,
                             user_heart_rate: data[i].user_heart_rate});
             }
             $scope.search();
@@ -1838,7 +1838,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getheartRatebyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stHrDate).toISOString(), enddate: new Date($scope.endHrDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stHrDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stHrDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stHrDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endHrDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endHrDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endHrDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1846,8 +1846,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.heartRate.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time,
+					activity_date: data[i].date,
+                    activity_time: data[i].time,
                                 user_heart_rate: data[i].user_heart_rate});
                 }
                 $scope.search();
@@ -1989,7 +1989,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getmsgbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -1999,8 +1999,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.message.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time,
+				activity_date: data[i].date,
+                activity_time: data[i].time,
                             message : data[i].message});
             }
             $scope.search();
@@ -2023,7 +2023,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getmsgbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toISOString(), enddate: new Date($scope.endMsgDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2031,8 +2031,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.message.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time,
+					activity_date: data[i].date,
+                    activity_time: data[i].time,
                                 message: data[i].message});
                 }
                 $scope.search();
@@ -2177,7 +2177,7 @@ angular.module("app", ['chart.js','ngRoute'])
       $http({
             url: '/api/getWatchDiscbypid',
             method: 'GET',
-            params: {p_id: val.username == null? val: val.username, startdate: startOfDayToday.toISOString(), enddate: endOfDayToday.toISOString()}
+            params: {p_id: val.username == null? val: val.username, startdate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date().toLocaleDateString().split('/')[2] + "-" + new Date().toLocaleDateString().split('/')[0] + "-" + new Date().toLocaleDateString().split('/')[1] + " " + "23:59:59"}
         })
         .success(function(data) {
             console.log(data);
@@ -2187,8 +2187,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.watchrecords.push({serial_no: i+1, 
-				activity_date: data[i].activity_date,
-                activity_time: data[i].activity_time
+				activity_date: data[i].date,
+                activity_time: data[i].time
 				});
             }
             $scope.search();
@@ -2212,7 +2212,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/getWatchDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toISOString(), enddate: new Date($scope.endDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2221,8 +2221,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.watchrecords.push({serial_no: i+1, 
-					activity_date: data[i].activity_date,
-                    activity_time: data[i].activity_time
+					activity_date: data[i].date,
+                    activity_time: data[i].time
 					});
                 }
                 $scope.search();
@@ -2370,8 +2370,8 @@ angular.module("app", ['chart.js','ngRoute'])
             for(var i = 0; i< data.length; i++)
             {
                 $scope.messages.push({message: data[i].msg, 
-                    date: new Date(data[i].sent_date).toLocaleDateString(),
-                    time: data[i].sent_time});
+                    date: data[i].date,
+                    time: data[i].time});
             }
             $scope.search();
         })
@@ -2402,8 +2402,8 @@ angular.module("app", ['chart.js','ngRoute'])
                 for(var i = 0; i< data.length; i++)
                 {
                     $scope.messages.push({message: data[i].msg, 
-                        date: new Date(data[i].sent_date).toLocaleDateString(),
-                        time: data[i].sent_time});
+                        date: data[i].date,
+                        time: data[i].time});
                 }
                 $scope.search();
             })
