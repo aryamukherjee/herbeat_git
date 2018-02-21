@@ -2,7 +2,7 @@ module.exports = function(app, conn, fadmin) {
 
     /*Added by Bharath */
     app.get('/api/gethratebypid', function(req, res) {
-        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) as activity_time_formatted,activity_time ,min(user_heart_rate) as mine ,max(user_heart_rate) as maxe,avg(user_heart_rate) as avge from physical_activity  WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? group by DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) order by activity_time asc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) as activity_time_formatted ,min(user_heart_rate) as mine ,max(user_heart_rate) as maxe,avg(user_heart_rate) as avge from physical_activity  WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? group by DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) order by STR_TO_DATE(activity_time_formatted,"%m/%d/%Y %k:00:00") asc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
@@ -16,7 +16,7 @@ module.exports = function(app, conn, fadmin) {
         });
     });
     app.get('/api/gethratebyDate', function(req, res) {
-        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) as activity_time_formatted ,activity_time,min(user_heart_rate) as mine ,max(user_heart_rate) as maxe,avg(user_heart_rate) as avge from physical_activity  WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? group by DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) order by activity_time asc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
+        conn.query('select DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) as activity_time_formatted ,min(user_heart_rate) as mine ,max(user_heart_rate) as maxe,avg(user_heart_rate) as avge from physical_activity  WHERE lower(username) = lower(?) AND activity_time BETWEEN  ? AND ? group by DATE_FORMAT(activity_time,  "%m/%d/%Y %k:00:00" ) order by STR_TO_DATE(activity_time_formatted,"%m/%d/%Y %k:00:00") asc', [req.query.p_id, req.query.startdate, req.query.enddate], function (error, results) {
             if (error)
             {
                 console.log(error);
