@@ -207,6 +207,8 @@ angular.module("app", ['chart.js','ngRoute'])
         })
         .success(function(data) {
             console.log(data);
+			var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
               var labels = [" "];
                 var dat = [[]];
 				var chartcolors=[];
@@ -217,7 +219,7 @@ angular.module("app", ['chart.js','ngRoute'])
 			var data3 = [[]];
             for(var i = 0; i< data.length; i++)
             {
-                labels.push((data[i].activity_time));
+                labels.push((data[i].activity_time_formatted));
                 data1.push(data[i].mine);
 				data2.push(data[i].avge);
 				data3.push(data[i].maxe);
@@ -254,7 +256,13 @@ angular.module("app", ['chart.js','ngRoute'])
         }
 		  }
 		
-      ]
+      ],
+	  yAxes: [{
+      scaleLabel: {
+        display: true,
+        labelString: 'Heart Rate'
+      }
+    }]
     }
   };
         })
@@ -280,7 +288,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $http({
             url: '/api/gethratebyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.hstDate).toISOString(), enddate: new Date($scope.hendDate).toISOString()}
+            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.hstDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.hstDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.hstDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.hendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.hendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.hendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
             })
             .success(function(data) {
 				debugger;
@@ -295,7 +303,7 @@ angular.module("app", ['chart.js','ngRoute'])
 			var data3 = [[]];
             for(var i = 0; i< data.length; i++)
             {
-                labels.push((data[i].activity_time));
+                labels.push((data[i].activity_time_formatted));
                 data1.push(data[i].mine);
 				data2.push(data[i].avge);
 				data3.push(data[i].maxe);
@@ -325,14 +333,19 @@ angular.module("app", ['chart.js','ngRoute'])
           userCallback:  function(label, index, labels) {
 					   
 					   if(labels.length>1){
-					  return labels[index].split(" ")[1];
+					  return labels[index].split(" ")[0];
 					   }
 					  
     }
         }
 		  }
 		
-      ]
+      ], yAxes: [{
+      scaleLabel: {
+        display: true,
+        labelString: 'Heart Rate'
+      }
+    }]
     }
   };
 			
