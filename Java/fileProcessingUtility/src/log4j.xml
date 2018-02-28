@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="RollingAppender" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File"
+			value="C:/eclipse_workspace/HerBeatAppProj/logs/herbeatapp.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%t] %d{yyyy-MM-dd hh:mm a} %-5p %l - %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="com.herbeat.api.FileIOWorker">
+		<level value="INFO" />
+	</logger>
+	<logger name="com.herbeat.api.MoveProcessedFiles">
+		<level value="INFO" />
+	</logger>
+
+	<root>
+		<priority value="DEBUG" />
+		<appender-ref ref="RollingAppender" />
+	</root>
+
+</log4j:configuration> 
