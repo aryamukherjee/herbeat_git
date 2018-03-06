@@ -81,11 +81,11 @@ angular.module("app", ['chart.js','ngRoute'])
   $scope.hstDate = "";
     $scope.hendDate = "";
     $('#hstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#hendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
   
@@ -107,7 +107,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             var labels = [];
             var dat = [];
 			var chartcolors=[];
@@ -182,11 +182,11 @@ angular.module("app", ['chart.js','ngRoute'])
   $scope.hstDate = "";
     $scope.hendDate = "";
     $('#hstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#hendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
   
@@ -208,7 +208,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
 			var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
               var labels = [" "];
                 var dat = [[]];
 				var chartcolors=[];
@@ -379,11 +379,11 @@ angular.module("app", ['chart.js','ngRoute'])
  $scope.goalstDate = "";
     $scope.goalendDate = "";
     $('#goalstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#goalendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -494,7 +494,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             $scope.goalResp = []
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.goalendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.goalendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
                 $scope.goalResp.push({
@@ -571,11 +571,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.activitystDate = "";
     $scope.activityendDate = "";
     $('#actstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#actendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -688,7 +688,7 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.activityResp = [];
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.activityendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.activityendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
             	 $scope.activityResp.push({
@@ -769,11 +769,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.emastDate = "";
     $scope.emaendDate = "";
     $('#emastartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#emaendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -885,7 +885,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.emaendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.emaendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.emaResp = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -962,11 +962,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stDate = "";
     $scope.endDate = "";
     $('#startDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#endDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -1074,7 +1074,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.videos = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1145,11 +1145,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stDate = "";
     $scope.endDate = "";
     $('#bluestartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#blueendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
 
@@ -1261,7 +1261,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1333,11 +1333,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stDate = "";
     $scope.endDate = "";
     $('#remainingstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#remainingendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -1449,7 +1449,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1521,11 +1521,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stDate = "";
     $scope.endDate = "";
     $('#wifistartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#wifiendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -1637,7 +1637,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1710,11 +1710,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stHrDate = "";
     $scope.endHrDate = "";
     $('#startHrDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#endHrDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -1822,7 +1822,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endHrDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endHrDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.heartRate = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1895,11 +1895,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stMsgDate = "";
     $scope.endMsgDate = "";
     $('#stMsgDateId').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#endMsgDateId').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -2007,7 +2007,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.message = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -2079,11 +2079,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stDate = "";
     $scope.endDate = "";
     $('#watchstartDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#watchendDate').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -2195,7 +2195,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.watchrecords = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -2268,11 +2268,11 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.stMsgDate = "";
     $scope.endMsgDate = "";
     $('#stSentMsgDateId').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     $('#endSentMsgDateId').datepicker({
-        format: "mm-dd-yyyy",
+        format: "mm/dd/yyyy",
         autoclose: true
     });
     
@@ -2378,7 +2378,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
+            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.messages = [];
             for(var i = 0; i< data.length; i++)
             {
