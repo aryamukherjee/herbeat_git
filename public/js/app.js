@@ -221,7 +221,7 @@ angular.module("app", ['chart.js','ngRoute'])
             {
                 labels.push((data[i].activity_time_formatted));
                 data1.push(data[i].mine);
-				data2.push(data[i].avge);
+				data2.push(data[i].avge.toFixed(2));
 				data3.push(data[i].maxe);
 				chartcolors.push('#cc9900','#808080','#FF5252');
             }
@@ -305,7 +305,7 @@ angular.module("app", ['chart.js','ngRoute'])
             {
                 labels.push((data[i].activity_time_formatted));
                 data1.push(data[i].mine);
-				data2.push(data[i].avge);
+				data2.push(data[i].avge.toFixed(2));
 				data3.push(data[i].maxe);
 				chartcolors.push('#cc9900','#808080','#FF5252');
             }
