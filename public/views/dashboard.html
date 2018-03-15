@@ -214,8 +214,11 @@
           <i class="fa fa-area-chart"></i> Heart Rate</div>
         <div class="card-body" style="overflow: scroll">
 			<div id="hratebarchartc"  style="min-width:900px; max-height:550px">
-			  <canvas id="hratebarchart" class="chart chart-bar" chart-data="data" chart-labels="labels" 
-		   chart-colors="colours" chart-options="options"  chart-series="series"></canvas> 
+			  <canvas id="hratebarchart" class="chart chart-bar" chart-data="hpageData" chart-labels="hlabels" 
+		   chart-colors="hcolors" chart-options="options"  chart-series="series"></canvas> 
+		   </div>
+		   <div id="hratenav">
+				<a href ng-click="goPrev()" class="page-link" ng-disabled="hisPrev">« Prev</a> <a href ng-click="goNext()" class="page-link" ng-disabled="hisNext">Next »</a>
 		   </div>
         </div>
             <div class="card-footer small text-muted">

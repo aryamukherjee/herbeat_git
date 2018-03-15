@@ -171,7 +171,13 @@ angular.module("app", ['chart.js','ngRoute'])
         }
   }; */
   
-  
+  $scope.hcurpage = 0;
+  $scope.hisNext = true;
+  $scope.hisPrev = true;
+  const hpageSize = 12;
+  $scope.hpageData = [[]];
+  $scope.hlabels = [];
+  $scope.hcolors = [];
   $scope.labels = [];
   $scope.series = ['Minimum', 'Average', 'Maximum'];
   $scope.data = [];
@@ -189,6 +195,124 @@ angular.module("app", ['chart.js','ngRoute'])
         format: "mm/dd/yyyy",
         autoclose: true
     });
+	
+	//Arya Mukherjee - logic for pagination in bar graph
+	function initPage(data, startingIndex, dataLength){
+		$scope.hpageData = [[]];
+	    $scope.hlabels = [];
+	    $scope.hcolors = [];
+		var dat1 = [];
+		var dat2 = [];
+		var dat3 = [];
+		$scope.hcurpage = 1;
+		if(dataLength <= hpageSize)
+		{
+			for(var i = startingIndex; i< dataLength; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push(data[0][i]);
+				dat2.push(data[1][i]);
+				dat3.push(data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisNext = true;
+			$scope.hisPrev = true;
+		}
+		else
+		{
+			for(var i = startingIndex; i< hpageSize; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push(data[0][i]);
+				dat2.push(data[1][i]);
+				dat3.push(data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisNext = false;
+			$scope.hisPrev = true;
+		}
+	}
+	
+	$scope.goNext = function(){
+		var nextPage = $scope.hcurpage + 1;
+		$scope.hpageData = [[]];
+	    $scope.hlabels = [];
+	    $scope.hcolors = [];
+		var dat1 = [];
+		var dat2 = [];
+		var dat3 = [];
+		if(nextPage * hpageSize >= $scope.data[0].length)
+		{
+			for(var i = (nextPage * hpageSize) - hpageSize; i< $scope.data[0].length; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push($scope.data[0][i]);
+				dat2.push($scope.data[1][i]);
+				dat3.push($scope.data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisNext = true;
+			$scope.hisPrev = false;
+		}
+		else
+		{
+			for(var i = (nextPage * hpageSize) - hpageSize; i< nextPage * hpageSize; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push($scope.data[0][i]);
+				dat2.push($scope.data[1][i]);
+				dat3.push($scope.data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisNext = false;
+			$scope.hisPrev = false;
+		}
+		$scope.hcurpage = nextPage;
+		
+	}
+	$scope.goPrev = function(data){
+		var prevPage = $scope.hcurpage - 1;
+		$scope.hpageData = [[]];
+	    $scope.hlabels = [];
+	    $scope.hcolors = [];
+		var dat1 = [];
+		var dat2 = [];
+		var dat3 = [];
+		if((prevPage * hpageSize) - hpageSize == 0)
+		{
+			for(var i = (prevPage * hpageSize) - hpageSize; i< prevPage * hpageSize; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push($scope.data[0][i]);
+				dat2.push($scope.data[1][i]);
+				dat3.push($scope.data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisPrev = true;
+			$scope.hisNext = false;
+		}
+		else
+		{
+			for(var i = (prevPage * hpageSize) - hpageSize; i< prevPage * hpageSize; i++)
+			{
+				$scope.hlabels.push($scope.labels[i]);
+				dat1.push($scope.data[0][i]);
+				dat2.push($scope.data[1][i]);
+				dat3.push($scope.data[2][i]);
+				$scope.hcolors.push('#cc9900','#808080','#FF5252');
+			}	
+			$scope.hpageData = [dat1, dat2, dat3];
+			$scope.hisPrev = false;
+			$scope.hisNext = false;
+		}
+		$scope.hcurpage = prevPage;
+	}
+	//Arya Mukherjee - logic for pagination in bar graph
   
   function getByPatientId(val){
       var today = new Date();
@@ -209,27 +333,28 @@ angular.module("app", ['chart.js','ngRoute'])
             console.log(data);
 			var dat = new Date().toLocaleString().split(',')[0].split('/');
             $scope.hendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
-              var labels = [" "];
-                var dat = [[]];
+              var labels = [];
 				var chartcolors=[];
-                $scope.labels = [" "];
+                $scope.labels = [];
                 $scope.data = [[]];
-                var data1 = [[]];
-			var data2 = [[]];
-			var data3 = [[]];
-            for(var i = 0; i< data.length; i++)
-            {
-                labels.push((data[i].activity_time_formatted));
-                data1.push(data[i].mine);
+                var data1 = [];
+			var data2 = [];
+			var data3 = [];
+			for(var i = 0; i< data.length; i++)
+			{
+				labels.push((data[i].activity_time_formatted));
+				data1.push(data[i].mine);
 				data2.push(data[i].avge.toFixed(2));
 				data3.push(data[i].maxe);
 				chartcolors.push('#cc9900','#808080','#FF5252');
-            }
-            $scope.labels = labels;
-            $scope.data = [data1,data2,data3];
+			}
+			$scope.labels = labels;
+			$scope.data = [data1,data2,data3];
 			$scope.colours = chartcolors;
+            
+			initPage($scope.data, 0, data.length);
 			
-			$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
+			//$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
 			
 			$scope.options = {
 		 tooltips: {
@@ -297,14 +422,13 @@ angular.module("app", ['chart.js','ngRoute'])
             .success(function(data) {
 				debugger;
                 console.log(data);
-                  var labels = [" "];
-                var dat = [[]];
+                  var labels = [];
 				var chartcolors=[];
-                $scope.labels = [" "];
+                $scope.labels = [];
                 $scope.data = [[]];
-                var data1 = [[]];
-			var data2 = [[]];
-			var data3 = [[]];
+                var data1 = [];
+			var data2 = [];
+			var data3 = [];
             for(var i = 0; i< data.length; i++)
             {
                 labels.push((data[i].activity_time_formatted));
@@ -317,7 +441,9 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.data = [data1,data2,data3];
 			$scope.colours = chartcolors;
 			
-			$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
+			initPage($scope.data, 0, data.length);
+			
+			//$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
 			
 			$scope.options = {
 		 tooltips: {
