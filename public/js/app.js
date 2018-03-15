@@ -229,9 +229,11 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.data = [data1,data2,data3];
 			$scope.colours = chartcolors;
 			
+			$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
+			
 			$scope.options = {
-		 
 		 tooltips: {
+			 position: 'average',
                 callbacks: {
         title: function(tooltipItem, data,labels,index) {
 			
@@ -243,9 +245,11 @@ angular.module("app", ['chart.js','ngRoute'])
     
 	  xAxes: [
         {
-          
+			barThickness: 15,
+          barPercentage: 1.0,
+			categoryPercentage: 0.8,
 		  position: 'bottom',
-          ticks: {
+          ticks: { 
           userCallback:  function(label, index, labels) {
 					   
 					   if(labels.length>1){
@@ -313,9 +317,11 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.data = [data1,data2,data3];
 			$scope.colours = chartcolors;
 			
+			$("#hratebarchartc").css("width", (data.length * 60) + 200 + "px");
+			
 			$scope.options = {
-		 
 		 tooltips: {
+			 position: 'average',
                 callbacks: {
         title: function(tooltipItem, data,labels,index) {
 			
@@ -327,9 +333,11 @@ angular.module("app", ['chart.js','ngRoute'])
     
 	  xAxes: [
         {
-          
+			barThickness: 15,
+          barPercentage: 1.0,
+			categoryPercentage: 0.8,
 		  position: 'bottom',
-          ticks: {
+          ticks: {  
           userCallback:  function(label, index, labels) {
 					   
 					   if(labels.length>1){

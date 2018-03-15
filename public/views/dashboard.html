@@ -212,9 +212,11 @@
         <div class="card mb-3" ng-controller="heartRateCtrl">
         <div class="card-header">
           <i class="fa fa-area-chart"></i> Heart Rate</div>
-        <div class="card-body">
-          <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" 
-	   chart-colors="colours" chart-options="options"  chart-series="series" ></canvas> 
+        <div class="card-body" style="overflow: scroll">
+			<div id="hratebarchartc"  style="min-width:900px; max-height:550px">
+			  <canvas id="hratebarchart" class="chart chart-bar" chart-data="data" chart-labels="labels" 
+		   chart-colors="colours" chart-options="options"  chart-series="series"></canvas> 
+		   </div>
         </div>
             <div class="card-footer small text-muted">
                 <div class="card-deck">
