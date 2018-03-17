@@ -174,7 +174,7 @@ angular.module("app", ['chart.js','ngRoute'])
   $scope.hcurpage = 0;
   $scope.hisNext = true;
   $scope.hisPrev = true;
-  const hpageSize = 12;
+  const hpageSize = 10;
   $scope.hpageData = [[]];
   $scope.hlabels = [];
   $scope.hcolors = [];
@@ -370,7 +370,6 @@ angular.module("app", ['chart.js','ngRoute'])
     
 	  xAxes: [
         {
-			barThickness: 15,
           barPercentage: 1.0,
 			categoryPercentage: 0.8,
 		  position: 'bottom',
@@ -459,7 +458,6 @@ angular.module("app", ['chart.js','ngRoute'])
     
 	  xAxes: [
         {
-			barThickness: 15,
           barPercentage: 1.0,
 			categoryPercentage: 0.8,
 		  position: 'bottom',
