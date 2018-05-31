@@ -20,6 +20,21 @@ angular.module("app", ['chart.js','ngRoute'])
     
   }]).controller("mainCtrl", ['$scope', '$http', function ($scope, $http) {
       
+        //changes for date range search
+        $scope.startDate = "";
+        $scope.endDate = "";
+        //initialize the date picker control
+        $('#startDate').datepicker({
+            format: "mm-dd-yyyy",
+            autoclose: true
+        });
+        $('#endDate').datepicker({
+            format: "mm-dd-yyyy",
+            autoclose: true
+        });
+        
+        
+        //end
         $scope.usermessage = "";
         $scope.username = "";
         $scope.welcomeVisible = true;
@@ -39,6 +54,20 @@ angular.module("app", ['chart.js','ngRoute'])
         .error(function(error) {
                 console.log('Error: ' + error);
         });
+        
+        $scope.searchByDate = function()
+        {
+            if(new Date($scope.startDate) < new Date($scope.endDate))
+            {
+                var stDate = $scope.startDate;
+                var edDate = $scope.endDate;
+                $scope.$broadcast('searchbydate', {stDate, edDate});    
+            }
+            else
+            {
+                alert('Invalid dates selected!');
+            }
+        };
         
         $scope.sendMessage = function()
         {
@@ -409,14 +438,14 @@ angular.module("app", ['chart.js','ngRoute'])
         getByPatientId(args.val);
     });
     
-    $scope.searchHeartrate = function(){
-		
-        if(new Date($scope.hstDate) <= new Date($scope.hendDate))
-        {
+    function searchHeartrate(val){
+
             $http({
             url: '/api/gethratebyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.hstDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.hstDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.hstDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.hendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.hendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.hendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toISOString(), 
+                enddate: new Date(val.edDate).toISOString()}
             })
             .success(function(data) {
 				debugger;
@@ -485,13 +514,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
     
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchHeartrate(args);
+    });
+    //end
+        
 }]).controller("userGoalsCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
 
     //pagination
@@ -643,6 +680,42 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
+  
+  function searchUsergoals(val){
+
+        $http({
+        url: '/api/getusergoalsbyDate',
+        method: 'GET',
+        params: {p_id: $scope.$parent.$parent.username.username, 
+            startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                    + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                    + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                    + "00:00:00", 
+            enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                    + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                    + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                    + "23:59:59"}
+        })
+        .success(function(data) {
+            console.log(data);
+            $scope.goalResp = [];
+            for(var i = 0; i< data.length; i++)
+            {
+                $scope.goalResp.push({
+                    readiness_level: data[i].user_readiness_level, 
+                    walk_target: data[i].user_walk_target,
+                    current_energy: data[i].user_current_energy,
+                    activity_date: data[i].date,
+                                        activity_time: data[i].time,
+                    serial_no : i+1});
+            }
+            $scope.search();
+        })
+        .error(function(error) {
+                console.log('Error: ' + error);
+        });
+
+  };
   if($scope.$parent.$parent.username.username != null)
     {
         getByPatientId($scope.$parent.$parent.username.username);
@@ -650,38 +723,12 @@ angular.module("app", ['chart.js','ngRoute'])
   $scope.$on('usernamechange', function(event, args){
         getByPatientId(args.val);
     });
-    $scope.searchUsergoals = function(){
-        if(new Date($scope.goalstDate) <= new Date($scope.goalendDate))
-        {
-            $http({
-            url: '/api/getusergoalsbyDate',
-            method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.goalstDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.goalstDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.goalstDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.goalendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.goalendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.goalendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
-            })
-            .success(function(data) {
-                console.log(data);
-                $scope.goalResp = [];
-                for(var i = 0; i< data.length; i++)
-                {
-                    $scope.goalResp.push({
-                        readiness_level: data[i].user_readiness_level, 
-                        walk_target: data[i].user_walk_target,
-                        current_energy: data[i].user_current_energy,
-                        activity_date: data[i].date,
-					    activity_time: data[i].time,
-                        serial_no : i+1});
-                }
-                $scope.search();
-            })
-            .error(function(error) {
-                    console.log('Error: ' + error);
-            });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
-  };
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchUsergoals(args);
+    });
+    //end
+    
     
 }]).controller("userActivitiesCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
@@ -839,21 +886,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    $scope.searchActivity = function(){
-        if(new Date($scope.activitystDate) <= new Date($scope.activityendDate))
-        {
+  
+  function searchActivity(val){
+
             $http({
             url: '/api/getuseractivitybyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.activitystDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.activitystDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.activitystDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.activityendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.activityendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.activityendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -875,12 +922,20 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchActivity(args);
+    });
+    //end
     
 }]).controller("EMAResCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
@@ -1017,7 +1072,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.emaendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
+            $scope.emaendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.emaResp = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -1035,21 +1090,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    $scope.searchEmaResp = function(){
-        if(new Date($scope.emastDate) <= new Date($scope.emaendDate))
-        {
+  
+  function searchEmaResp(val){
+
             $http({
             url: '/api/getemarespbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.emastDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.emastDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.emastDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.emaendDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.emaendDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.emaendDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1069,12 +1124,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchEmaResp(args);
+    });
+    //end
+    
 }]).controller("watchedVideoCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -1221,21 +1285,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-  $scope.searchWatchedVideos = function(){
-        if(new Date($scope.stDate) <= new Date($scope.endDate))
-        {
+  
+  function searchWatchedVideos(val){
+
             $http({
             url: '/api/getWatchedVideosbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1252,12 +1316,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchWatchedVideos(args);
+    });
+    //end
+  
 }]).controller("bluetoothConCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -1408,22 +1481,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-    
-  $scope.searchBluetoothConFailed = function(){
-        if(new Date($scope.stDate) <= new Date($scope.endDate))
-        {
+  
+  function searchBluetoothConFailed(val){
+
             $http({
             url: '/api/getBluetoothDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1440,12 +1512,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchBluetoothConFailed(args);
+    });
+    //end
 }]).controller("remainingBatteryCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -1596,22 +1677,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-    
-  $scope.searchRemainingBattery = function(){
-        if(new Date($scope.stDate) <= new Date($scope.endDate))
-        {
+  
+  function searchRemainingBattery(val){
+
             $http({
             url: '/api/getRemainingBatterybyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1628,12 +1708,22 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchRemainingBattery(args);
+    });
+    //end
+  
 }]).controller("wifiDiscCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -1784,22 +1874,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-    
-  $scope.searchWifiDisc = function(){
-        if(new Date($scope.stDate) <= new Date($scope.endDate))
-        {
+  
+  function searchWifiDisc(val){
+
             $http({
             url: '/api/getWifiDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -1816,12 +1905,22 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchWifiDisc(args);
+    });
+    //end
+  
    /*Added by Bharath*/
   }]).controller("HeartRateCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
@@ -1969,21 +2068,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-  $scope.searchHeartRate = function(){
-        if(new Date($scope.stHrDate) <= new Date($scope.endHrDate))
-        {
+  
+  function searchHeartRate(val){
+
             $http({
             url: '/api/getheartRatebyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stHrDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stHrDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stHrDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endHrDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endHrDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endHrDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2000,13 +2099,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
   
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchHeartRate(args);
+    });
+    //end
   
   }]).controller("messageCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
@@ -2139,7 +2246,7 @@ angular.module("app", ['chart.js','ngRoute'])
         .success(function(data) {
             console.log(data);
             var dat = new Date().toLocaleString().split(',')[0].split('/');
-            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
+            $scope.endMsgDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"-"+dat[1]+"-"+dat[2];
             $scope.message = [];
             for(var i = 0; i< data.length; i++)
             {
@@ -2154,21 +2261,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-  $scope.searchMessage = function(){
-        if(new Date($scope.stMsgDate) <= new Date($scope.endMsgDate))
-        {
+  
+  function searchMessage(val){
+
             $http({
             url: '/api/getmsgbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2185,12 +2292,20 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+  //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchMessage(args);
+    });
+    //end
   
 }]).controller("watchDiscCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
@@ -2342,22 +2457,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-    
-  $scope.searchWatchDisc = function(){
-        if(new Date($scope.stDate) <= new Date($scope.endDate))
-        {
+  
+  function searchWatchDisc(val){
+
             $http({
             url: '/api/getWatchDiscbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2375,12 +2489,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchWatchDisc(args);
+    });
+    //end
+  
 }]).controller("sentMsgCtrl", ['$scope', '$http', '$timeout', '$filter', function ($scope, $http, $timeout, $filter) {
     
     //pagination
@@ -2524,22 +2647,21 @@ angular.module("app", ['chart.js','ngRoute'])
                 console.log('Error: ' + error);
         });
   };
-  $scope.$on('usernamechange', function(event, args){
-        getByPatientId(args.val);
-    });
-    
-    if($scope.$parent.$parent.username.username != null)
-    {
-        getByPatientId($scope.$parent.$parent.username.username);
-    }
-    
-  $scope.searchSentMessage = function(){
-        if(new Date($scope.stMsgDate) <= new Date($scope.endMsgDate))
-        {
+  
+  function searchSentMessage(val){
+
             $http({
             url: '/api/getsentmsgbyDate',
             method: 'GET',
-            params: {p_id: $scope.$parent.$parent.username.username, startdate: new Date($scope.stMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.stMsgDate).toLocaleDateString().split('/')[1] + " " + "00:00:00", enddate: new Date($scope.endMsgDate).toLocaleDateString().split('/')[2] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[0] + "-" + new Date($scope.endMsgDate).toLocaleDateString().split('/')[1] + " " + "23:59:59"}
+            params: {p_id: $scope.$parent.$parent.username.username, 
+                startdate: new Date(val.stDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.stDate).toLocaleDateString().split('/')[1] + " " 
+                        + "00:00:00", 
+                enddate: new Date(val.edDate).toLocaleDateString().split('/')[2] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[0] + "-" 
+                        + new Date(val.edDate).toLocaleDateString().split('/')[1] + " " 
+                        + "23:59:59"}
             })
             .success(function(data) {
                 console.log(data);
@@ -2555,10 +2677,21 @@ angular.module("app", ['chart.js','ngRoute'])
             .error(function(error) {
                     console.log('Error: ' + error);
             });
-        }
-        else
-        {
-            alert('Invalid dates selected!');
-        }
   };
+  
+  $scope.$on('usernamechange', function(event, args){
+        getByPatientId(args.val);
+    });
+    
+    if($scope.$parent.$parent.username.username != null)
+    {
+        getByPatientId($scope.$parent.$parent.username.username);
+    }
+    
+    //call the search API on event searchByDate
+    $scope.$on('searchbydate', function(event, args){
+        searchSentMessage(args);
+    });
+    //end
+  
 }]);
