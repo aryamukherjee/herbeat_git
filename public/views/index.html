@@ -19,7 +19,7 @@
   <link href="css/sb-admin.css" rel="stylesheet">
 </head>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark" id="page-top" ng-controller="mainCtrl">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html">Herbeat App</a>
@@ -231,10 +231,23 @@
     </div>
   </nav>
   <div class="content-wrapper">
-      <div class="container-fluid" ng-controller="mainCtrl">
+      <div class="container-fluid">
           <select  class="custom-select" ng-model="username" ng-options="user.username for user in users">
               <option value="" selected>-- select patient ID --</option>
           </select>
+          <div class="card-deck" style="display:inline-flex; margin-left: 10px">
+                <div class="input-group date" id="startDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="Start Date" ng-model="startDate" ng-disabled="welcomeVisible">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <div class="input-group date" id="endDate" style="width:150px; margin-right: 5px">
+                    <input type="text" class="form-control" placeholder="End Date" ng-model="endDate" ng-disabled="welcomeVisible">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar" aria-hidden="true"></i></span>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="searchByDate()" ng-disabled="welcomeVisible">Search</button>
+            </div>
           <button ng-disabled="welcomeVisible" id="sendMsg" type="button" class="btn btn-info" data-toggle="modal" data-target="#msgModal" style="float:right">Send Message</button>
           <!--Modal dialog-->
           <div class="modal fade" tabindex="-1" role="dialog" id="msgModal" aria-labelledby="msgModalLabel" aria-hidden="true">
@@ -254,8 +267,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="sendMessage()">Send</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="sendMessage()">Send</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
                 </div>
               </div>
             </div>
@@ -298,7 +311,9 @@
     <script src="js/sb-admin-charts.min.js"></script>-->
     <!--Angular scripts-->
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-cookies.js"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-sanitize.js"></script>
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="vendor/angular-chart/angular-chart.min.js"></script>
     <script src="./js/responsive-paginate.js"></script>
