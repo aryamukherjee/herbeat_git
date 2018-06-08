@@ -6,7 +6,7 @@ try
 {
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://herbeat-4e03e.firebaseio.com"
+        databaseURL: process.env.FIREBASE_URL
       });
 } 
 catch (err) 
