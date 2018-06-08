@@ -5,15 +5,15 @@ angular.module("app", ['chart.js','ngRoute'])
     $routeProvider
         // default route
         .when('/', {
-            templateUrl : 'views/dashboard.html'
+            templateUrl : 'views/partial/dashboard.html'
         })
         
         .when('/statistics', {
-            templateUrl : 'views/statistics.html'
+            templateUrl : 'views/partial/statistics.html'
         })
         
         .when('/sentMessages', {
-            templateUrl : 'views/sentMessages.html'
+            templateUrl : 'views/partial/sentMessages.html'
         });
                   
     // Configure all charts
@@ -25,11 +25,11 @@ angular.module("app", ['chart.js','ngRoute'])
         $scope.endDate = "";
         //initialize the date picker control
         $('#startDate').datepicker({
-            format: "mm-dd-yyyy",
+            format: "mm/dd/yyyy",
             autoclose: true
         });
         $('#endDate').datepicker({
-            format: "mm-dd-yyyy",
+            format: "mm/dd/yyyy",
             autoclose: true
         });
         
@@ -93,7 +93,8 @@ angular.module("app", ['chart.js','ngRoute'])
     
     $scope.$watch('username', function(newVal, oldVal){
         if(newVal!=oldVal){
-            
+            var dat = new Date().toLocaleString().split(',')[0].split('/');
+            $scope.endDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             $scope.welcomeVisible = false;
         $scope.statVisible = true;
             $scope.$broadcast('usernamechange',{"val":newVal});

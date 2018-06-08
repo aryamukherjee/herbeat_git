@@ -1,61 +1,77 @@
 var express = require('express');
-var mysql = require('mysql');
-var admin = require("firebase-admin");
-var serviceAccount = require("./private_key/herbeat-4e03e-firebase-adminsdk-pa8e2-2c44358147.json");
+var path = require('path');
+var jade = require('jade');
+var expressValidator = require('express-validator');
+var session = require('express-session');
+var passport = require('passport');
+var MySQLStore = require('express-mysql-session')(session);
+var flash = require('connect-flash');
+var LocalStrategy = require('passport-local').Strategy;
 
+//global root location
+global.appRoot = path.resolve(__dirname);
+
+require('dotenv').config();
 var port = process.env.PORT || 9090;
 
 var morgan = require('morgan'); 
 var bodyParser = require('body-parser'); 
 var methodOverride = require('method-override'); 
+var index = require('./routes/index');
+var auth = require('./routes/auth');
+var api = require('./routes/api');
 
 var app = express(); 
 
-
-//local env setup for MySql
-var conn = mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'root',
-    database: 'herbeatapp'
-});
-
-conn.connect(function(err){
-    if(err){
-        console.log(err);
-    }
-    else{
-        console.log('Connected to MySQL');
-    }
-});
-
-//initialize firebase app API
-try
-{
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://herbeat-4e03e.firebaseio.com"
-      });
-} 
-catch (err) 
-{
-  // we skip the "already exists" message which is
-  // not an actual error when we're hot-reloading
-  if (!/already exists/.test(err.message)) 
-  {
-    console.error('Firebase initialization error');
-  }
-}
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(express.static(__dirname + '/public'));
 app.use(morgan('dev')); 
 app.use(bodyParser.urlencoded({'extended':'true'})); 
 app.use(bodyParser.json()); 
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+app.use(expressValidator());
 app.use(methodOverride());
 
-require('./routes/routes.js')(app, conn, admin);
+//passport session store in db
+var options = {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database : process.env.DB_NAME
+};
+
+var sessionStore = new MySQLStore(options);
+
+app.use(session({
+  secret: process.env.SECRET,
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+      secure: false, 
+      maxAge: 7200000
+    }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+//default route
+app.get('/', function(req, res){
+    res.redirect('/home');
+});
+app.use('/', index);
+app.use('/auth', auth);
+app.use('/api', api);
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+      return done(null, user);
+  }
+));
 
 app.listen(port);
 console.log("Server listening on port " + port);
