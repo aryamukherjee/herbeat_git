@@ -124,7 +124,7 @@
     <!--table 2-->
     <div class="card mb-3" ng-controller="remainingBatteryCtrl">
         <div class="card-header">
-          <i class="fa fa-table"></i> Remaining Battery Left</div>
+          <i class="fa fa-table"></i> Remaining Battery Left <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" title="Chart" style="float: right" data-target="#remainingBatteryModal"><i class="fa fa-bar-chart"></i></button></div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0">
@@ -177,6 +177,26 @@
                 <button type="button" class="btn btn-primary" ng-click="searchRemainingBattery()">Search</button>
             </div>
         </div>-->
+        <!--Modal dialog-->
+            <div class="modal fade" tabindex="-1" role="dialog" id="remainingBatteryModal" aria-labelledby="msgModalLabel" aria-hidden="true" style="width: auto;height: auto">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content" style="width: 800px;height: 550px">
+                  <div class="modal-header">
+                    <h6 class="modal-title">Remaining Battery</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                      <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" 
+                    chart-colors="colors" chart-options="options"  chart-series="series" ></canvas> 
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
       </div>
     <!--table3-->
     

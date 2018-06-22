@@ -539,6 +539,47 @@ angular.module("app", ['chart.js','ngRoute'])
     };
     $scope.gap = 5;
     
+    //chart configuration
+    $scope.labels = [];
+    $scope.series = ['Step Count'];
+    $scope.data = [];
+    $scope.readinessdata = [];
+    $scope.walktargetdata = [];
+    $scope.currenergydata = [];
+    $scope.colors = [];
+    
+    $scope.options = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'User Goals'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Readiness Level'
+                    }
+                }]
+            }
+        };
+    
     $scope.filteredItems = [];
     $scope.groupedItems = [];
     $scope.itemsPerPage = 5;
@@ -646,6 +687,37 @@ angular.module("app", ['chart.js','ngRoute'])
     $scope.setPage = function () {
         $scope.currentPage = this.n;
     };
+    
+    $scope.readinessLevel = function(){
+        $scope.data = $scope.readinessdata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Readiness Level'
+                    }
+                }];
+    };
+    $scope.walkTarget = function(){
+        $scope.data = $scope.walktargetdata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Walk Target'
+                    }
+                }];
+    };
+    $scope.currEnergy = function(){
+        $scope.data = $scope.currenergydata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Curr. Energy'
+                    }
+                }];
+    };
   function getByPatientId(val){
       var today = new Date();
       var startOfDayToday = new Date(today.getFullYear()
@@ -667,6 +739,14 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.goalendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
+                $scope.data.push(data[i].user_readiness_level);
+                //push chart data
+                $scope.readinessdata.push(data[i].user_readiness_level);
+                $scope.walktargetdata.push(data[i].user_walk_target);
+                $scope.currenergydata.push(data[i].user_current_energy);
+                $scope.labels.push(data[i].date);
+                $scope.colors.push('#a8011a');
+                
                 $scope.goalResp.push({
                     readiness_level: data[i].user_readiness_level, 
                     walk_target: data[i].user_walk_target,
@@ -702,6 +782,14 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.goalResp = [];
             for(var i = 0; i< data.length; i++)
             {
+                $scope.data.push(data[i].user_readiness_level);
+                //push chart data
+                $scope.readinessdata.push(data[i].user_readiness_level);
+                $scope.walktargetdata.push(data[i].user_walk_target);
+                $scope.currenergydata.push(data[i].user_current_energy);
+                $scope.labels.push(data[i].date);
+                $scope.colors.push('#a8011a');
+                
                 $scope.goalResp.push({
                     readiness_level: data[i].user_readiness_level, 
                     walk_target: data[i].user_walk_target,
@@ -739,6 +827,48 @@ angular.module("app", ['chart.js','ngRoute'])
         reverse : false
     };
     $scope.gap = 5;
+    
+    //chart configuration
+    $scope.labels = [];
+    $scope.series = ['Step Count'];
+    $scope.data = [];
+    $scope.sittingdata = [];
+    $scope.walkingdata = [];
+    $scope.stepcountdata = [];
+    $scope.distcovereddata = [];
+    $scope.colors = [];
+    
+    $scope.options = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'User Activities'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Step Count'
+                    }
+                }]
+            }
+        };
     
     $scope.filteredItems = [];
     $scope.groupedItems = [];
@@ -849,6 +979,47 @@ angular.module("app", ['chart.js','ngRoute'])
         $scope.currentPage = this.n;
     };
     
+    $scope.sittingduration = function(){
+        $scope.data = $scope.sittingdata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Sitting Duration'
+                    }
+                }];
+    };
+    $scope.walkingduration = function(){
+        $scope.data = $scope.walkingdata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Walking Duration'
+                    }
+                }];
+    };
+    $scope.stepcount = function(){
+        $scope.data = $scope.stepcountdata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Step Count'
+                    }
+                }];
+    };
+    $scope.distcovered = function(){
+        $scope.data = $scope.distcovereddata;
+        $scope.options.scales.yAxes = [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Dist. Covered'
+                    }
+                }];
+    };
+    
   function getByPatientId(val){
       var today = new Date();
       var startOfDayToday = new Date(today.getFullYear()
@@ -871,6 +1042,19 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.activityendDate = (dat[0].length == 1? "0"+dat[0]: dat[0])+"/"+(dat[1].length == 1? "0"+dat[1]: dat[1])+"/"+dat[2];
             for(var i = 0; i< data.length; i++)
             {
+                $scope.data.push(data[i].user_sitting_duration);
+                //push chart data
+                var hr = (data[i].user_sitting_duration).split(':')[0];
+                var min = (data[i].user_sitting_duration).split(':')[1];
+                $scope.sittingdata.push(parseInt(hr) + '.' + parseInt(min));
+                var hr = (data[i].user_walking_duration).split(':')[0];
+                var min = (data[i].user_walking_duration).split(':')[1];
+                $scope.walkingdata.push(parseInt(hr) + '.' + parseInt(min));
+                $scope.stepcountdata.push(data[i].user_step_count);
+                $scope.distcovereddata.push(data[i].distance_covered_in_miles);
+                $scope.colors.push('#580277');
+                
+                $scope.labels.push(data[i].date);
             	 $scope.activityResp.push({
             		 user_sitting_duration: data[i].user_sitting_duration, 
             		 user_walking_duration: data[i].user_walking_duration,
@@ -908,6 +1092,19 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.activityResp = [];
                 for(var i = 0; i< data.length; i++)
                 {
+                    $scope.data.push(data[i].user_step_count);
+                    //push chart data
+                    var hr = (data[i].user_sitting_duration).split(':')[0];
+                    var min = (data[i].user_sitting_duration).split(':')[1];
+                    $scope.sittingdata.push(parseInt(hr) + '.' + parseInt(min));
+                    var hr = (data[i].user_walking_duration).split(':')[0];
+                    var min = (data[i].user_walking_duration).split(':')[1];
+                    $scope.walkingdata.push(parseInt(hr) + '.' + parseInt(min));
+                    $scope.stepcountdata.push(data[i].user_step_count);
+                    $scope.distcovereddata.push(data[i].distance_covered_in_miles);
+                    $scope.colors.push('#580277');
+                
+                    $scope.labels.push(data[i].date);
                      $scope.activityResp.push({
                              user_sitting_duration: data[i].user_sitting_duration, 
                              user_walking_duration: data[i].user_walking_duration,
@@ -1537,6 +1734,45 @@ angular.module("app", ['chart.js','ngRoute'])
     };
     $scope.gap = 5;
     
+    //chart configuration
+    $scope.labels = [];
+    $scope.series = ['Step Count'];
+    $scope.data = [];
+    $scope.remainingbatterydata = [];
+    $scope.colors = [];
+    
+    $scope.options = {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Remaining Battery'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                            display: true,
+                            labelString: 'Remaining Battery %'
+                    }
+                }]
+            }
+        };
+    
     $scope.filteredItems = [];
     $scope.groupedItems = [];
     $scope.itemsPerPage = 5;
@@ -1667,10 +1903,15 @@ angular.module("app", ['chart.js','ngRoute'])
             $scope.records = [];
             for(var i = 0; i< data.length; i++)
             {
-                $scope.records.push({serial_no: i+1, 
-				activity_date: data[i].date,
-                activity_time: data[i].time,
-                                        remaining_battery: data[i].remaining_battery});
+                $scope.data.push(data[i].remaining_battery);
+                $scope.labels.push(data[i].date);
+                $scope.colors.push('#0c6601');
+                
+                $scope.records.push({
+                    serial_no: i+1, 
+                    activity_date: data[i].date,
+                    activity_time: data[i].time,
+                    remaining_battery: data[i].remaining_battery});
             }
             $scope.search();
         })
@@ -1699,10 +1940,15 @@ angular.module("app", ['chart.js','ngRoute'])
                 $scope.records = [];
                 for(var i = 0; i< data.length; i++)
                 {
-                    $scope.records.push({serial_no: i+1, 
-					activity_date: data[i].date,
-                    activity_time: data[i].time,
-                                        remaining_battery: data[i].remaining_battery});
+                    $scope.data.push(data[i].remaining_battery);
+                    $scope.labels.push(data[i].date);
+                    $scope.colors.push('#0c6601');
+                
+                    $scope.records.push({
+                        serial_no: i+1, 
+                        activity_date: data[i].date,
+                        activity_time: data[i].time,
+                        remaining_battery: data[i].remaining_battery});
                 }
                 $scope.search();
             })
