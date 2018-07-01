@@ -3,9 +3,117 @@ var expressValidator = require('express-validator');
 var conn = require('../database/db');
 var bcrypt = require('bcrypt');
 var passport = require('passport');
+var rt = require('random-token').create('gergbjy45646jss_hfah12312e4_2j6678bjhoisprlg7433sdkl_vjt');
 var router = express.Router();
 
 const saltRounds = 10;
+
+router.get('/reset_password', function(req, res) {
+    if(!req.isAuthenticated())
+    {
+        res.sendFile('verifyEmail.html', {root: appRoot + '/public/views'});
+    }
+    else
+    {
+        res.redirect('/home');
+    }
+});
+
+router.get('/new_password', function(req, res) {
+    if(!req.isAuthenticated())
+    {
+        const token = req.query.token;
+        conn.query('SELECT id FROM user_authentication WHERE reset_password_token = ?', 
+            [token], function (error, results) {
+                if(results.length !== 0)
+                {
+                    res.sendFile('resetPassword.html', {root: appRoot + '/public/views'});
+                }
+                else
+                {
+                    res.redirect('/home');
+                }
+        });
+    }
+    else
+    {
+        res.redirect('/home');
+    }
+});
+
+router.post('/new_password', function(req, res){
+    req.checkBody('password', 'Password must be between 8-100 characters long.').len(8, 100);
+    req.checkBody("password", "Password must include one lowercase character, one uppercase character, a number, and a special character.").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,}$/, "i");
+    req.checkBody('confirmPassword', 'Password must be between 8-100 characters long.').len(8, 100);
+    req.checkBody('confirmPassword', 'Passwords do not match.').equals(req.body.password); 
+    
+    const error = req.validationErrors();
+
+    if(error)
+    {
+        console.log(error);
+        res.status(404).send(error);
+    }
+    else
+    {
+        const password = req.body.password;
+        const confirmpassword = req.body.confirmpassword;
+        const token = req.body.token;
+        
+        conn.query('SELECT id FROM user_authentication WHERE reset_password_token = ?', 
+            [token], function (error, results) {
+            if (error) throw error;
+            if(results.length !== 0)
+            {
+                bcrypt.hash(password, saltRounds, function(err, hash){
+                    conn.query('UPDATE user_authentication SET password = ?, reset_password_token = ? WHERE reset_password_token = ?', 
+                        [hash, '', token], function (error, results) {
+                        if (error)
+                        {
+                            res.status(400).send('Server had an unexpected error! Please try again.');
+                        }
+                        else
+                        {
+                            res.status(200).end();
+                        }
+                    });
+                });
+            }
+            else
+            {
+                res.status(404).send('Invalid request!');
+            }
+        }); 
+    }
+});
+
+router.post('/verify_email', function(req, res){
+   const email = req.body.email;
+   console.log(email);
+   conn.query('SELECT id, first_name, last_name FROM user_authentication WHERE user_email = ?', 
+            [email], function (error, results) {
+            if (error) throw error;
+            if(results.length !== 0)
+            {
+                const token = rt(100);
+                conn.query('UPDATE user_authentication SET reset_password_token = ? WHERE user_email = ?', 
+                    [token, email], function (error, results) {
+                    if (error)
+                    {
+                        res.status(400).send('Server had an unexpected error! Please try again.');
+                    }
+                    else
+                    {
+                        res.status(200).send(token);
+                    }
+                });
+            }
+            else
+            {
+                res.status(404).send('Email not found. Please try again!');
+            }
+        }); 
+});
 
 router.get('/login', function(req, res) {
     if(!req.isAuthenticated())

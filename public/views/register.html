@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Herbeatapp - Register</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+<link href="../css/signin.css" rel="stylesheet">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="login-form-container">
+<form class="form-register" id="register-form">
+<h3>HerbeatApp</h3>
+<hr>
+<h5>Please Sign Up</h5>
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <label for="fname">First Name *</label>
+        <input type="text" id="fname" name="fname" class="form-control form-control-sm" placeholder="" required autofocus>
+        <label for="lname">Last Name *</label>
+        <input type="text" id="lname" name="lname" class="form-control form-control-sm" placeholder="" required>
+        <label for="inputEmail">Email address *</label>
+        <input type="email" id="inputEmail" name="email" class="form-control form-control-sm" placeholder="" required>
+    </div>
+    <div class="col">
+        <label for="dob">Date of Birth *</label>
+        <input id="dob" name="dob" type="text" class="form-control form-control-sm" placeholder="mm-dd-yyyy" required readonly="">
+        <label for="inputPassword">Password *</label>
+        <input type="password" id="inputPassword"  name="password" class="form-control form-control-sm" placeholder="" required>
+        <label for="confirmPassword">Confirm Password *</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-sm" placeholder="" required>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <button class="btn btn-lg btn-primary btn-block" id="register">Create an account</button>
+        <p class="mt-5 mb-3 text-muted">Already have an account? <a href="/auth/login">Signin.</a></p>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        $('#dob').datepicker({
+            format: "mm-dd-yyyy",
+            autoclose: true,
+            endDate: "0d",
+            todayHighlight: true
+        });
+        
+        $("#register-form").submit(function(e){
+            return false;
+        });
+        
+        $('#register').on('click', function(){
+            var fname = $('#fname').val();
+            var lname = $('#lname').val();
+            var dob = $('#dob').val();
+            var email = $('#inputEmail').val();
+            var password = $('#inputPassword').val();
+            var confirmPassword = $('#confirmPassword').val();
+            $.ajax({
+                url: '/auth/register',
+                method: 'POST',
+                data: {email: email, password: password, 
+                    fname: fname, lname: lname, confirmPassword: confirmPassword, dob: dob},
+                statusCode: {
+                    404: function(data, err) {
+                        var msg = "";
+                        var i = 1;
+                        var errors = JSON.parse(data.responseText);
+                        console.log(errors);
+                        for (var i = 0; i< errors.length; i++)
+                        {
+                            var j = i+1;
+                            msg = msg + + j +"." + errors[i].msg;
+
+                        }
+                        alert(msg);
+                    },
+                    400: function(data, err) {
+                        
+                        alert(data.responseText);
+                    }
+                  }
+            }).done(function(data, err){
+                alert('Registration successful! Please login.');
+                document.location.href = '/auth/login';
+            });
+            
+        });
+        
+    });
+</script>

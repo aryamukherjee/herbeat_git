@@ -27,6 +27,11 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div style="display: block;width: 100%">
+            <div class="btn-group" style="display: block;float: right;">
+                <i class="fa fa-user-o" aria-hidden="true" style="color:#efefef; margin-right: 10px"></i><strong style="color:#efefef; margin-right: 10px" ng-bind-html="user"></strong><a href="/auth/logout" style="color: #efefef; text-decoration: none"><i class="fa fa-fw fa-sign-out" style="color:#efefef;"></i>Logout</a>
+            </div>
+        </div>
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
           <a class="nav-link" href="#/">

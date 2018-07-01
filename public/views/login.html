@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Herbeatapp - Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../css/signin.css" rel="stylesheet">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="login-form-container">
+<form class="form-signin" id="signin-form">
+<h3>HerbeatApp</h3>
+<hr>
+<h5>Please Sign In</h5>
+<label for="inputEmail">Email address *</label>
+<input type="email" id="inputEmail" name="email" class="form-control" placeholder="" required autofocus>
+<label for="inputPassword">Password * <a href="/auth/reset_password">Forgot password?</a></label>
+<input type="password" id="inputPassword" name="password" class="form-control" placeholder="" required>
+<button class="btn btn-lg btn-primary btn-block" id="signin">Sign in</button>
+<p class="mt-5 mb-3 text-muted">New to HerbeatApp? <a href="/auth/register">Create an account.</a></p>
+</form>
+</div>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        $("#signin-form").submit(function(e){
+            return false;
+        });
+        
+        $('#signin').on('click', function(){
+            var email = $('#inputEmail').val();
+            var password = $('#inputPassword').val();
+            $.ajax({
+                url: '/auth/login',
+                method: 'POST',
+                data: {email: email, password: password}
+            }).done(function(data, err){
+                document.location.href = '/'
+            }).fail(function(data, err){
+                alert(data.responseText);
+            });
+            
+        });
+        
+    });
+</script>

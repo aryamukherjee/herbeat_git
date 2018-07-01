@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Herbeatapp - Verify your email</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../css/signin.css" rel="stylesheet">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="login-form-container">
+<form class="form-signin" id="form-signin">
+<h3>HerbeatApp</h3>
+<hr>
+<h5>Please verify your email before you reset your password.</h5>
+<label for="inputEmail">Email address *</label>
+<input type="email" id="inputEmail" name="email" class="form-control" placeholder="" required autofocus>
+<button class="btn btn-lg btn-primary btn-block" id="verifyemail">Verify Email</button>
+</form>
+</div>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+        $("#form-signin").submit(function(e){
+            return false;
+        });
+        
+        $('#verifyemail').on('click', function(){
+            var email = $('#inputEmail').val();
+            $.ajax({
+                url: '/auth/verify_email',
+                method: 'POST',
+                data: {email: email}
+            }).done(function(data, err){
+                document.location.href = '/auth/new_password?token=' + data;
+            }).fail(function(data, err){
+                alert(data.responseText);
+            });
+            
+        });
+        
+    });
+</script>
