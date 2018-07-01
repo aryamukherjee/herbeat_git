@@ -1,4 +1,4 @@
-angular.module("app", ['chart.js','ngRoute'])
+angular.module("app", ['chart.js', 'ngRoute', 'ngCookies', 'ngSanitize'])
   // Optional configuration
   .config(['ChartJsProvider', '$routeProvider', '$httpProvider', function (ChartJsProvider, $routeProvider, $httpProvider) {
     
@@ -18,8 +18,9 @@ angular.module("app", ['chart.js','ngRoute'])
                   
     // Configure all charts
     
-  }]).controller("mainCtrl", ['$scope', '$http', function ($scope, $http) {
+  }]).controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', function ($rootScope, $scope, $http, $cookies) {
       
+        $scope.user = $cookies.get("username");
         //changes for date range search
         $scope.startDate = "";
         $scope.endDate = "";
